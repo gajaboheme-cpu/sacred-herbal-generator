@@ -843,12 +843,21 @@
     </div>
 
     <div class="question-block">
-      <div class="question-label">Formula format</div>
+      <div class="question-label">Formula type</div>
       <div class="options-grid" data-group="format" data-multi="false">
-        <div class="option-pill" data-value="infused herbal oil (Levo or slow infusion)">Infused Herbal Oil</div>
+        <div class="option-pill" data-value="infused herbal oil">Infused Herbal Oil</div>
         <div class="option-pill" data-value="ritual body oil blend">Ritual Body Oil</div>
         <div class="option-pill" data-value="bath blend (dried herbs and salts)">Bath Blend</div>
         <div class="option-pill" data-value="herbal steam blend">Herbal Steam</div>
+      </div>
+    </div>
+
+    <div class="question-block" id="infusion-method-block" style="display:none">
+      <div class="question-label">Infusion method</div>
+      <div class="options-grid" data-group="infusion-method" data-multi="false">
+        <div class="option-pill" data-value="Levo machine: overnight infusion at 130F for 8-10 hours, dried herbs only, press and strain in the morning, bottle while warm">Levo Machine (overnight)</div>
+        <div class="option-pill" data-value="slow stovetop infusion: low heat never boiling, 4-6 hours, stir occasionally, strain through cheesecloth">Slow Stovetop (4-6 hrs)</div>
+        <div class="option-pill" data-value="cold sun infusion: fill jar with dried herbs, cover completely with oil, seal and place in warm sunny spot for 4-6 weeks, strain before use">Cold / Sun Infusion (4-6 weeks)</div>
       </div>
     </div>
 
@@ -1095,7 +1104,11 @@ function validateStep(n) {
       return false;
     }
     if (!state.selections['format']) {
-      alert('Please select a formula format.');
+      alert('Please select a formula type.');
+      return false;
+    }
+    if (state.selections['format'] === 'infused herbal oil' && !state.selections['infusion-method']) {
+      alert('Please select an infusion method for your herbal oil.');
       return false;
     }
   }
@@ -1117,6 +1130,18 @@ document.querySelectorAll('.option-pill').forEach(pill => {
       grid.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
       pill.classList.add('selected');
       state.selections[group] = pill.dataset.value;
+    }
+
+    // Show infusion method block only when infused herbal oil is selected
+    if (group === 'format') {
+      const methodBlock = document.getElementById('infusion-method-block');
+      if (methodBlock) {
+        methodBlock.style.display = pill.dataset.value === 'infused herbal oil' ? 'block' : 'none';
+        if (pill.dataset.value !== 'infused herbal oil') {
+          delete state.selections['infusion-method'];
+          methodBlock.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
+        }
+      }
     }
   });
 });
@@ -1234,7 +1259,8 @@ CLIENT PROFILE:
 - Tissue moisture state: ${state.selections['moist-state'] || 'balanced'}
 - Tissue tension state: ${state.selections['tension-state'] || 'normal tone'}
 - Body systems to address: ${systems}
-- Formula format: ${state.selections['format'] || 'infused herbal oil'}
+- Formula type: ${state.selections['format'] || 'infused herbal oil'}
+- Infusion method (if applicable): ${state.selections['infusion-method'] || 'not specified'}
 - Client intention/concern: ${concern}
 
 Based on this profile, create a complete herbal formula. You MUST respond in valid JSON only, with NO markdown, no code blocks, no extra text. Use this exact structure:
@@ -1274,8 +1300,11 @@ Rules:
 - Use ONLY carrier oils from the provided carrier oil list
 - Include 1-2 carrier oils with percentages that add to 100%
 - Include 4-6 herbs: 1 primary, 2-3 secondary, 1 ritual/energetic
-- Parts should be whole numbers (1, 2, 3)
-- Instructions should be specific to the formula format selected
+- Parts should be whole numbers (1, 2, 3). Always include a conversion note at the end of instructions: "1 part = 2 tablespoons for a small batch (4 oz), or 1/4 cup for a larger batch (8 oz)."
+- For Infused Herbal Oil: write instructions specifically for the infusion method selected. If Levo machine: (1) Measure and combine carrier oils in the Levo reservoir pod, (2) Add completely dried herbs only — no fresh plant material, (3) Set Levo to 130F on the herb/low setting, infuse overnight 8-10 hours, (4) In the morning press and strain through the Levo filter, (5) Pour warm oil into amber glass bottles, label with formula name and date, (6) Store away from heat and light, shelf life 6-12 months. If slow stovetop: (1) Combine oils and dried herbs in a double boiler or heavy pot, (2) Keep heat very low — never boiling, 95-110F ideally, (3) Infuse 4-6 hours stirring occasionally, (4) Strain through cheesecloth while warm, squeeze out all oil, (5) Bottle in amber glass and label. If cold sun infusion: (1) Fill a clean dry jar with dried herbs, (2) Cover completely with carrier oil leaving no air pockets, (3) Seal tightly and place in a warm sunny window or warm spot, (4) Infuse 4-6 weeks shaking daily, (5) Strain through cheesecloth, bottle and label.
+- For Ritual Body Oil: instructions should cover blending pre-infused or plain carrier oils directly, adding any powders, no heat required, ready to use immediately
+- For Bath Blend: instructions should cover combining dried herbs with salts and any powders in a bowl, packaging in muslin bags or jars, how to use in the bath
+- For Herbal Steam: instructions should cover selecting a heat-safe bowl, adding dried herbs, pouring just-boiled water, tent with a towel over head, steam for 10-15 minutes, keep eyes closed
 - Keep all text grounded, professional, and educational
 - Do not include any safety claims or medical language`;
 
@@ -1360,6 +1389,15 @@ function renderFormula(f) {
         <div class="step-text">${step}</div>
       </div>`;
   });
+  instrHtml += `
+    <div style="margin-top:1.25rem;padding:0.875rem 1rem;background:var(--gold-pale);border-left:3px solid var(--gold);border-radius:0 2px 2px 0;">
+      <div style="font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Parts conversion</div>
+      <div style="font-size:13px;color:var(--ink-mid);line-height:1.6;">
+        <strong>1 part = 2 tablespoons</strong> for a small batch (4 oz total)<br>
+        <strong>1 part = ¼ cup</strong> for a larger batch (8 oz total)<br>
+        <span style="color:var(--ink-soft);font-size:12px;">For overnight Levo infusion: set to 130°F, infuse 8–10 hours on the herb/low setting.</span>
+      </div>
+    </div>`;
   document.getElementById('instructions').innerHTML = instrHtml;
 
   // Ritual note
