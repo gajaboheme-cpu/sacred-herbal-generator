@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sacred Alchemist — Formula Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-pale: #F7F0E0;
+    --ink: #1C1A16;
+    --ink-mid: #3D3A30;
+    --ink-soft: #7A7567;
+    --cream: #FAF6EE;
+    --cream-dark: #F0E9D8;
+    --sage: #7A8C6E;
+    --rose: #C4867A;
+    --border: rgba(201,168,76,0.25);
+    --border-strong: rgba(201,168,76,0.5);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    font-weight: 300;
+  }
+
+  /* Decorative background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 10% 20%, rgba(201,168,76,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(196,134,122,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .header-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .header-rule {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.25rem auto;
+    opacity: 0.6;
+  }
+
+  .header p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* Step indicator */
+  .steps-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 3rem;
+  }
+
+  .step-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    background: var(--cream);
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+
+  .step-dot.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: white;
+  }
+
+  .step-dot.done {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: white;
+  }
+
+  .step-line {
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .step-line.done { background: var(--sage); opacity: 0.5; }
+
+  /* Cards */
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .card p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Question blocks */
+  .question-block {
+    margin-bottom: 1.75rem;
+  }
+
+  .question-block:last-child { margin-bottom: 0; }
+
+  .question-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* Option pills */
+  .options-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .option-pill {
+    padding: 8px 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-mid);
+    background: var(--cream);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    letter-spacing: 0.02em;
+  }
+
+  .option-pill:hover {
+    border-color: var(--gold);
+    color: var(--ink);
+    background: var(--gold-pale);
+  }
+
+  .option-pill.selected {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: white;
+  }
+
+  /* Tissue state grid */
+  .tissue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .tissue-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tissue-label-small {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  .tissue-options {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  /* Text input */
+  .concern-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--ink);
+    background: var(--cream);
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .concern-input:focus {
+    border-color: var(--gold);
+    background: white;
+  }
+
+  .concern-input::placeholder { color: var(--ink-soft); }
+
+  /* System checkboxes */
+  .system-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+  }
+
+  /* Generate button */
+  .generate-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--ink);
+    color: var(--gold-light);
+    border: none;
+    border-radius: 2px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .generate-btn:hover:not(:disabled) {
+    background: var(--ink-mid);
+    color: var(--gold);
+  }
+
+  .generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .generate-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+
+  .generate-btn:hover:not(:disabled)::after {
+    transform: translateX(100%);
+  }
+
+  /* Loading state */
+  .loading-state {
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+
+  .loading-sigil {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1.5rem;
+    border: 1px solid var(--gold);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-state p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .loading-steps {
+    margin-top: 1rem;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    min-height: 20px;
+  }
+
+  /* Formula output */
+  .formula-output {
+    display: none;
+  }
+
+  .formula-output.visible { display: block; }
+
+  .formula-header {
+    text-align: center;
+    padding: 2.5rem;
+    background: var(--ink);
+    color: var(--gold-light);
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .formula-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
+  }
+
+  .formula-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+
+  .formula-subtitle {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(232,213,163,0.6);
+    position: relative;
+  }
+
+  .formula-rule {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1rem auto;
+    opacity: 0.4;
+    position: relative;
+  }
+
+  /* Formula sections */
+  .formula-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+
+  .formula-section-header {
+    padding: 1rem 1.5rem;
+    background: var(--gold-pale);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-icon {
+    width: 24px;
+    height: 24px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-icon svg {
+    width: 12px;
+    height: 12px;
+    fill: white;
+  }
+
+  .formula-section-header h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .formula-section-body {
+    padding: 1.5rem;
+  }
+
+  /* Profile badges */
+  .profile-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .profile-badge {
+    padding: 5px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink-mid);
+    background: var(--cream);
+  }
+
+  .profile-badge.highlight {
+    background: var(--gold-pale);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  /* Ingredient rows */
+  .ingredient-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .ingredient-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .ingredient-row:first-child { padding-top: 0; }
+
+  .ingredient-name {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .ingredient-role {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .ingredient-why {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .ingredient-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: right;
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+
+  .ingredient-unit {
+    font-size: 11px;
+    color: var(--ink-soft);
+    display: block;
+    text-align: right;
+  }
+
+  /* Instructions */
+  .instruction-step {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: start;
+  }
+
+  .step-num {
+    width: 22px;
+    height: 22px;
+    background: var(--gold-pale);
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .step-text {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.6;
+  }
+
+  /* Ritual note */
+  .ritual-note {
+    background: var(--gold-pale);
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.25rem;
+    border-radius: 0 2px 2px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+
+  /* Action buttons */
+  .action-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.5rem;
+  }
+
+  .btn-secondary {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
+    background: transparent;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: var(--cream-dark);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  /* Scope note */
+  .scope-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 2rem;
+    padding: 1rem;
+    border-top: 1px solid var(--border);
+    line-height: 1.6;
+  }
+
+  /* Error */
+  .error-msg {
+    background: #FFF5F5;
+    border: 1px solid #FFD0CC;
+    border-radius: 2px;
+    padding: 1rem 1.5rem;
+    font-size: 13px;
+    color: #8B2E2E;
+    margin-top: 1rem;
+  }
+
+  /* Prose formatting from API */
+  .formula-prose {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.75;
+  }
+
+  .formula-prose h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  .formula-prose h4:first-child { margin-top: 0; }
+
+  .formula-prose p { margin-bottom: 0.75rem; }
+  .formula-prose p:last-child { margin-bottom: 0; }
+
+  .formula-prose ul {
+    list-style: none;
+    margin: 0.5rem 0 0.75rem;
+    padding: 0;
+  }
+
+  .formula-prose ul li {
+    padding: 0.4rem 0 0.4rem 1.25rem;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .formula-prose ul li:last-child { border-bottom: none; }
+
+  .formula-prose ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 11px;
+  }
+
+  .formula-prose strong {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .formula-prose em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 2rem 1rem 4rem; }
+    .card { padding: 1.5rem; }
+    .tissue-grid { grid-template-columns: 1fr; }
+    .action-row { flex-direction: column; }
+  }
+
+  @media print {
+    body { background: white; }
+    .generate-btn, .action-row, .steps-nav { display: none; }
+    .card, .formula-section { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <p class="header-eyebrow">Sacred Alchemist · Gaja Bohème</p>
+    <h1>Herbal Formula <em>Generator</em></h1>
+    <div class="header-rule"></div>
+    <p>Answer a few questions about your client and receive a custom herbal oil formula with carrier ratios, herb selections, and the reasoning behind every choice.</p>
+  </div>
+
+  <!-- Step indicator -->
+  <div class="steps-nav" id="stepsNav">
+    <div class="step-dot active" id="dot-1">1</div>
+    <div class="step-line" id="line-1"></div>
+    <div class="step-dot" id="dot-2">2</div>
+    <div class="step-line" id="line-2"></div>
+    <div class="step-dot" id="dot-3">3</div>
+    <div class="step-line" id="line-3"></div>
+    <div class="step-dot" id="dot-4">4</div>
+  </div>
+
+  <!-- STEP 1: Constitution clues -->
+  <div class="card" id="step1">
+    <div class="card-label">Step 1 of 4</div>
+    <h2>Reading the Client</h2>
+    <p>Select all that feel true for this person. You are building their energetic profile.</p>
+
+    <div class="question-block">
+      <div class="question-label">How does their body tend to run?</div>
+      <div class="options-grid" data-group="body-temp" data-multi="false">
+        <div class="option-pill" data-value="runs warm, often feels hot, flushes easily">Runs warm, flushes easily</div>
+        <div class="option-pill" data-value="runs cool, often feels cold, slow to warm up">Runs cool, slow to warm up</div>
+        <div class="option-pill" data-value="temperature varies, hard to regulate">Temperature varies</div>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">How is their energy and drive?</div>
+      <div class="options-grid" data-group="energy" data-multi="false">
+        <div class="option-pill" data-value="intense, focused, burns bright and burns out">Intense, burns bright and burns out</div>
+        <div class="option-pill" data-value="steady but heavy, slow to start, hard to motivate">Steady but heavy, slow to start</div>
+        <div class="option-pill" data-value="scattered, creative bursts followed by depletion">Scattered, creative bursts then depletion</div>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">How does their skin and body tend to present?</div>
+      <div class="options-grid" data-group="skin" data-multi="false">
+        <div class="option-pill" data-value="oily or combination skin, prone to redness and inflammation, medium build">Oily, prone to redness, medium build</div>
+        <div class="option-pill" data-value="cool and pale, tends toward puffiness and water retention, larger build">Cool, pale, tends toward puffiness</div>
+        <div class="option-pill" data-value="dry, thin skin, light frame, tends toward dehydration">Dry, thin skin, light frame</div>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">How do they handle stress?</div>
+      <div class="options-grid" data-group="stress" data-multi="false">
+        <div class="option-pill" data-value="reactive, intense, prone to anger or frustration under pressure">Reactive, prone to frustration</div>
+        <div class="option-pill" data-value="withdraws, resistant to change, holds onto things">Withdraws, holds onto things</div>
+        <div class="option-pill" data-value="anxious, overwhelmed, overthinks, difficulty grounding">Anxious, overwhelmed, hard to ground</div>
+      </div>
+    </div>
+
+    <button class="generate-btn" onclick="goToStep(2)" id="btn-step1">Continue →</button>
+  </div>
+
+  <!-- STEP 2: Tissue state -->
+  <div class="card" id="step2" style="display:none">
+    <div class="card-label">Step 2 of 4</div>
+    <h2>Tissue State</h2>
+    <p>What is the environment of the body or the area you are working with? Select one from each pair.</p>
+
+    <div class="tissue-grid">
+      <div class="tissue-pair">
+        <div class="tissue-label-small">Temperature</div>
+        <div class="tissue-options">
+          <div class="options-grid" style="flex-direction:column" data-group="temp-state" data-multi="false">
+            <div class="option-pill" data-value="heat present, inflammation, redness">Heat / Inflammation</div>
+            <div class="option-pill" data-value="cold present, poor circulation, pallor">Cold / Poor circulation</div>
+            <div class="option-pill" data-value="temperature is neutral">Neutral</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tissue-pair">
+        <div class="tissue-label-small">Moisture</div>
+        <div class="tissue-options">
+          <div class="options-grid" style="flex-direction:column" data-group="moist-state" data-multi="false">
+            <div class="option-pill" data-value="excess dampness, congestion, stagnation">Damp / Congested</div>
+            <div class="option-pill" data-value="dryness, dehydration, brittleness">Dry / Dehydrated</div>
+            <div class="option-pill" data-value="moisture is balanced">Balanced</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tissue-pair">
+        <div class="tissue-label-small">Tension</div>
+        <div class="tissue-options">
+          <div class="options-grid" style="flex-direction:column" data-group="tension-state" data-multi="false">
+            <div class="option-pill" data-value="tension, tightness, constriction, holding">Tense / Constricted</div>
+            <div class="option-pill" data-value="laxity, weakness, prolapse, lack of tone">Lax / Weak tone</div>
+            <div class="option-pill" data-value="tissue tone is normal">Normal tone</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:2rem">
+      <button class="btn-secondary" onclick="goToStep(1)">← Back</button>
+      <button class="generate-btn" style="margin-top:0;flex:2" onclick="goToStep(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: System + Concern -->
+  <div class="card" id="step3" style="display:none">
+    <div class="card-label">Step 3 of 4</div>
+    <h2>Focus & Intention</h2>
+    <p>What body system or experience are we creating this formula for?</p>
+
+    <div class="question-block">
+      <div class="question-label">Primary body system (select all that apply)</div>
+      <div class="options-grid" data-group="system" data-multi="true">
+        <div class="option-pill" data-value="lymphatic system">Lymphatic</div>
+        <div class="option-pill" data-value="nervous system and stress response">Nervous system</div>
+        <div class="option-pill" data-value="reproductive and womb care">Womb / Reproductive</div>
+        <div class="option-pill" data-value="digestive system">Digestive</div>
+        <div class="option-pill" data-value="respiratory system">Respiratory</div>
+        <div class="option-pill" data-value="skin and integumentary">Skin</div>
+        <div class="option-pill" data-value="musculoskeletal and joints">Musculoskeletal</div>
+        <div class="option-pill" data-value="immune system">Immune</div>
+        <div class="option-pill" data-value="emotional and energetic body">Emotional / Energetic</div>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">Formula intention — what is this person coming to you for? (in your own words)</div>
+      <textarea class="concern-input" id="clientConcern" placeholder="e.g. chronic lymphatic congestion after illness, needs grounding and nervous system support, womb tenderness and hormonal irregularity..."></textarea>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">Formula format</div>
+      <div class="options-grid" data-group="format" data-multi="false">
+        <div class="option-pill" data-value="infused herbal oil (Levo or slow infusion)">Infused Herbal Oil</div>
+        <div class="option-pill" data-value="ritual body oil blend">Ritual Body Oil</div>
+        <div class="option-pill" data-value="bath blend (dried herbs and salts)">Bath Blend</div>
+        <div class="option-pill" data-value="herbal steam blend">Herbal Steam</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:2rem">
+      <button class="btn-secondary" onclick="goToStep(2)">← Back</button>
+      <button class="generate-btn" style="margin-top:0;flex:2" onclick="goToStep(4)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Generate -->
+  <div class="card" id="step4" style="display:none">
+    <div class="card-label">Step 4 of 4</div>
+    <h2>Your Client Profile</h2>
+    <p>Review what we know before generating the formula.</p>
+
+    <div id="profileSummary" class="profile-badges"></div>
+
+    <button class="generate-btn" onclick="generateFormula()" id="generateBtn">
+      ✦ Generate Formula
+    </button>
+
+    <div class="action-row" style="margin-top:1rem">
+      <button class="btn-secondary" onclick="goToStep(3)">← Revise</button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div id="loadingState" style="display:none">
+    <div class="card loading-state">
+      <div class="loading-sigil"></div>
+      <p>The Alchemist is at work...</p>
+      <div class="loading-steps" id="loadingText">Reading the client profile</div>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div id="errorState" style="display:none">
+    <div class="error-msg" id="errorMsg"></div>
+    <button class="btn-secondary" style="margin-top:1rem;width:100%" onclick="resetAll()">Start Over</button>
+  </div>
+
+  <!-- Formula Output -->
+  <div class="formula-output" id="formulaOutput">
+    <div class="formula-header">
+      <div class="formula-name" id="formulaName">—</div>
+      <div class="formula-rule"></div>
+      <div class="formula-subtitle" id="formulaSubtitle">Sacred Alchemist Formula</div>
+    </div>
+
+    <div class="formula-section">
+      <div class="formula-section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        </div>
+        <h3>Client Energetic Profile</h3>
+      </div>
+      <div class="formula-section-body">
+        <div class="formula-prose" id="profileAnalysis"></div>
+      </div>
+    </div>
+
+    <div class="formula-section">
+      <div class="formula-section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><path d="M9.5 6.5v3h-3v-3h3M11 5H5v6h6V5zm-1.5 9.5v3h-3v-3h3M11 13H5v6h6v-6zm6.5-6.5v3h-3v-3h3M19 5h-6v6h6V5zm-6 8h1.5v1.5H13V13zm1.5 1.5H16V16h-1.5v-1.5zM16 13h1.5v1.5H16V13zm-3 3h1.5v1.5H13V16zm1.5 1.5H16V19h-1.5v-1.5zM16 16h1.5v1.5H16V16zm1.5-1.5H19V16h-1.5v-1.5zm0 3H19V19h-1.5v-1.5z"/></svg>
+        </div>
+        <h3>Carrier Oil Base</h3>
+      </div>
+      <div class="formula-section-body">
+        <div id="carrierOils"></div>
+      </div>
+    </div>
+
+    <div class="formula-section">
+      <div class="formula-section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-8 2v2c-4 2-6 4-6 4 4-2 8-2 11 1z"/></svg>
+        </div>
+        <h3>Herb Selection</h3>
+      </div>
+      <div class="formula-section-body">
+        <div id="herbSelection"></div>
+      </div>
+    </div>
+
+    <div class="formula-section">
+      <div class="formula-section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        </div>
+        <h3>Instructions</h3>
+      </div>
+      <div class="formula-section-body">
+        <div id="instructions"></div>
+      </div>
+    </div>
+
+    <div class="formula-section">
+      <div class="formula-section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        </div>
+        <h3>Ritual Intention</h3>
+      </div>
+      <div class="formula-section-body">
+        <div class="ritual-note" id="ritualNote"></div>
+      </div>
+    </div>
+
+    <div class="scope-note">
+      This formula is an educational tool for wellness practitioners. It is not medical advice and does not constitute a diagnosis or treatment plan. Always work within your scope of practice.
+    </div>
+
+    <div class="action-row">
+      <button class="btn-secondary" onclick="window.print()">Print Formula</button>
+      <button class="btn-secondary" onclick="resetAll()">New Formula →</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+const state = {
+  selections: {},
+  currentStep: 1
+};
+
+// ── Herb database ──────────────────────────────────────────────────────────
+const HERB_DB = `
+AVAILABLE HERBS (use ONLY these herbs in formulas):
+Hibiscus — cooling, astringent, anti-inflammatory, lymphatic; high in antioxidants; Pitta-balancing
+Rose — astringent, anti-inflammatory, nervine, emotional heart opener; cooling and moistening; all constitutions
+Saint John's Wort — nervine, anti-inflammatory, topical wound healer, antidepressant; warming; Vata/Kapha
+Thyme — antimicrobial, expectorant, stimulating; warming and drying; Kapha
+Lemongrass — digestive, antimicrobial, cooling, uplifting; cooling; Pitta/Kapha
+Anise — digestive, expectorant, antispasmodic; warming; Vata/Kapha
+Black Pepper — stimulant, carminative, rubefacient; heating; Kapha
+Lalo (Jute Leaf) — nutritive, mucilaginous, mineral-rich, moistening; nourishing; Vata
+Lemon Balm — relaxing nervine, antiviral, digestive, cooling; cooling and moistening; Pitta/Vata
+Motherwort — uterine tonic, cardiac nervine, emmenagogue; cooling; womb support
+Juniper — diuretic, antimicrobial, warming stimulant; drying and warming; Kapha
+White Peony Imperial — blood tonic, antispasmodic, womb supportive; cooling; TCM tradition
+Tulsi (Holy Basil) — adaptogen, nervine, antimicrobial, immunomodulating; warming; all constitutions
+Ground Ginger — warming, stimulant, anti-inflammatory, carminative, circulatory; heating; Vata/Kapha
+Frankincense — anti-inflammatory, wound healing, ceremonial; warming; all constitutions
+Myrrh — antimicrobial, astringent, wound healing, ceremonial; warming and drying
+Dragon's Blood — astringent, wound healing, protective; ceremonial resin
+Cornflower — anti-inflammatory, soothing, lymphatic; cooling
+Chaste Berry (Vitex) — hormonal balancer, progesterone support; cooling; womb/reproductive
+Cinnamon Sticks — warming, stimulant, antimicrobial, circulatory; heating; Vata/Kapha
+Chamomile — relaxing nervine, anti-inflammatory, antispasmodic, digestive; cooling; Pitta/Vata
+Cleavers — lymphatic, diuretic, alterative, cooling; cooling and moistening; lymphatic system
+Burdock Root — alterative, lymphatic, liver support, nutritive; cooling; Pitta/Kapha
+Amla Powder — antioxidant, rejuvenating, Pitta-balancing, high Vitamin C; cooling; Pitta
+Mullein Leaf — expectorant, demulcent, respiratory; moistening; Kapha/Vata
+Neem Leaf — bitter, alterative, antimicrobial, cooling; bitter cooling; Pitta/Kapha
+Plantain Leaf — wound healing, drawing, anti-inflammatory, demulcent; cooling
+Peppermint — cooling, digestive, antispasmodic, analgesic; cooling; Pitta
+Red Clover — lymphatic, alterative, phytoestrogen, nutritive; cooling; hormonal/lymphatic
+Saw Palmetto — reproductive tonic, anti-androgenic; neutral; womb/reproductive
+Spearmint — digestive, cooling, milder than peppermint; cooling; Pitta
+Stinging Nettle — nutritive tonic, diuretic, anti-inflammatory, mineral-rich; neutral; all constitutions
+Rosemary — stimulant, circulatory, antimicrobial, cognitive; warming; Kapha/Vata
+Ground Turmeric — anti-inflammatory, alterative, liver support; warming; all constitutions
+White Copal — ceremonial, purifying, protective resin; ritual use
+Agrimony — astringent, digestive, liver support, drying; drying; Kapha/Pitta
+Angelica Root — warming, circulatory, digestive, uterine; heating; Vata/Kapha
+Ashwagandha — adaptogen, nervine tonic, nutritive, grounding; warming; Vata/Kapha
+Dandelion Root — liver support, alterative, bitter digestive, diuretic; cooling; Pitta/Kapha
+Cloves — warming, analgesic, antimicrobial, stimulant; heating; Kapha/Vata
+Dried Lemon — uplifting, astringent, cleansing; cooling; Florida water and ritual
+Echinacea — immune stimulant, lymphatic, anti-inflammatory; cooling; immune support
+Eucalyptus — expectorant, antimicrobial, cooling sensation; steam and topical
+Oregano — antimicrobial, warming, respiratory; heating; Kapha
+Red Raspberry Leaf — nutritive, uterine tonic, astringent, mineral-rich; cooling; womb care
+Sage — astringent, antimicrobial, drying, hormonal; drying/cooling; Kapha/menopausal
+Yarrow — astringent, diaphoretic, wound healing, lymphatic; neutral to cooling
+Lavender — relaxing nervine, antimicrobial, antispasmodic, skin healing; cooling; all constitutions
+Calendula — anti-inflammatory, skin healing, lymphatic, gentle; cooling; all constitutions
+Arnica Flowers — topical anti-inflammatory, bruising, muscle pain (EXTERNAL USE ONLY); Kapha
+
+AVAILABLE CARRIER OILS:
+Castor Oil — heavy, drawing, lymphatic movement, anti-inflammatory, ricinoleic acid; use 30-60% in lymphatic/womb formulas
+Sesame Oil — warming, grounding, deeply penetrating; Ayurvedic gold standard; use 30-60% in Vata/Kapha formulas
+Jojoba Oil — technically a wax, extremely stable, skin-balancing, all constitutions; good base for all types
+Sunflower Oil — light, cooling, Pitta-friendly, high linoleic acid; good for inflamed skin
+Olive Oil — medium weight, earthy, moistening and nutritive; traditional in Curanderismo
+Sweet Almond Oil — light, emotionally softening, nervous system; good for nervine and emotional formulas
+`;
+
+// ── Navigation ─────────────────────────────────────────────────────────────
+function goToStep(n) {
+  // Validate current step before advancing
+  if (n > state.currentStep) {
+    if (!validateStep(state.currentStep)) return;
+  }
+
+  // Hide all steps
+  [1,2,3,4].forEach(i => {
+    const el = document.getElementById('step' + i);
+    if (el) el.style.display = 'none';
+  });
+
+  // Update dots
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('dot-' + i);
+    const line = document.getElementById('line-' + i);
+    if (i < n) { dot.className = 'step-dot done'; if (line) line.className = 'step-line done'; }
+    else if (i === n) { dot.className = 'step-dot active'; if (line) line.className = 'step-line'; }
+    else { dot.className = 'step-dot'; if (line) line.className = 'step-line'; }
+  }
+
+  state.currentStep = n;
+  const el = document.getElementById('step' + n);
+  if (el) { el.style.display = 'block'; }
+
+  if (n === 4) buildProfileSummary();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function validateStep(n) {
+  if (n === 1) {
+    const required = ['body-temp', 'energy', 'skin', 'stress'];
+    for (const g of required) {
+      if (!state.selections[g]) {
+        alert('Please make a selection for each question before continuing.');
+        return false;
+      }
+    }
+  }
+  if (n === 2) {
+    const required = ['temp-state', 'moist-state', 'tension-state'];
+    for (const g of required) {
+      if (!state.selections[g]) {
+        alert('Please select one option from each pair.');
+        return false;
+      }
+    }
+  }
+  if (n === 3) {
+    if (!state.selections['system']) {
+      alert('Please select at least one body system.');
+      return false;
+    }
+    if (!state.selections['format']) {
+      alert('Please select a formula format.');
+      return false;
+    }
+  }
+  return true;
+}
+
+// ── Option pills ───────────────────────────────────────────────────────────
+document.querySelectorAll('.option-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const grid = pill.closest('[data-group]');
+    const group = grid.dataset.group;
+    const multi = grid.dataset.multi === 'true';
+
+    if (multi) {
+      pill.classList.toggle('selected');
+      const selected = [...grid.querySelectorAll('.option-pill.selected')].map(p => p.dataset.value);
+      state.selections[group] = selected.length ? selected : null;
+    } else {
+      grid.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
+      pill.classList.add('selected');
+      state.selections[group] = pill.dataset.value;
+    }
+  });
+});
+
+// ── Profile summary ────────────────────────────────────────────────────────
+function buildProfileSummary() {
+  const container = document.getElementById('profileSummary');
+  const labels = {
+    'body-temp': 'Body temp',
+    'energy': 'Energy',
+    'skin': 'Presentation',
+    'stress': 'Stress response',
+    'temp-state': 'Tissue temp',
+    'moist-state': 'Moisture',
+    'tension-state': 'Tension',
+    'system': 'System',
+    'format': 'Format'
+  };
+
+  let html = '';
+  for (const [group, label] of Object.entries(labels)) {
+    const val = state.selections[group];
+    if (!val) continue;
+    const display = Array.isArray(val) ? val.join(', ') : val;
+    const short = display.length > 40 ? display.substring(0, 40) + '...' : display;
+    html += `<div class="profile-badge highlight"><strong>${label}:</strong> ${short}</div>`;
+  }
+
+  const concern = document.getElementById('clientConcern').value;
+  if (concern) {
+    html += `<div class="profile-badge" style="width:100%"><strong>Intention:</strong> ${concern}</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+// ── Herb validation ───────────────────────────────────────────────────────
+const VALID_HERBS = [
+  'hibiscus','rose','saint john\'s wort','thyme','lemongrass','anise',
+  'black pepper','lalo','lemon balm','motherwort','juniper','white peony imperial',
+  'tulsi','ground ginger','ginger','frankincense','myrrh','dragon\'s blood',
+  'cornflower','chaste berry','vitex','cinnamon','chamomile','cleavers',
+  'burdock root','amla powder','amla','mullein leaf','mullein','neem leaf','neem',
+  'plantain leaf','plantain','peppermint','red clover','saw palmetto','spearmint',
+  'stinging nettle','nettle','rosemary','ground turmeric','turmeric','white copal',
+  'agrimony','angelica root','ashwagandha','dandelion root','dandelion','cloves',
+  'dried lemon','echinacea','eucalyptus','oregano','red raspberry leaf',
+  'red raspberry','sage','yarrow','lavender','calendula','arnica'
+];
+const VALID_CARRIERS = [
+  'castor oil','castor','sesame oil','sesame','jojoba oil','jojoba',
+  'sunflower oil','sunflower','olive oil','olive','sweet almond oil','sweet almond'
+];
+function validateFormula(formula) {
+  const warnings = [];
+  (formula.herbs || []).forEach((herb, i) => {
+    const name = herb.name.toLowerCase();
+    const isValid = VALID_HERBS.some(v => name.includes(v) || v.includes(name.split(' ')[0]));
+    if (!isValid) {
+      warnings.push('Herb "' + herb.name + '" is not in your current stock and was removed.');
+      formula.herbs[i] = null;
+    }
+  });
+  formula.herbs = formula.herbs.filter(Boolean);
+  (formula.carrierOils || []).forEach((oil, i) => {
+    const name = oil.name.toLowerCase();
+    const isValid = VALID_CARRIERS.some(v => name.includes(v) || v.includes(name.split(' ')[0]));
+    if (!isValid) {
+      warnings.push('Carrier "' + oil.name + '" not in stock — replaced with Jojoba.');
+      formula.carrierOils[i].name = 'Jojoba Oil';
+      formula.carrierOils[i].why = 'Substituted with Jojoba — stable and suitable for all constitutions.';
+    }
+  });
+  return { formula, warnings };
+}
+
+// ── Generate formula ────────────────────────────────────────────────────────
+async function generateFormula() {
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+
+  document.getElementById('step4').style.display = 'none';
+  document.getElementById('loadingState').style.display = 'block';
+  document.getElementById('formulaOutput').classList.remove('visible');
+  document.getElementById('errorState').style.display = 'none';
+
+  const loadingMessages = [
+    'Reading the client profile...',
+    'Selecting carrier oils...',
+    'Matching herbs to constitution...',
+    'Writing the ritual intention...',
+    'Assembling your formula...'
+  ];
+  let msgIdx = 0;
+  const loadingEl = document.getElementById('loadingText');
+  const loadingInterval = setInterval(() => {
+    msgIdx = (msgIdx + 1) % loadingMessages.length;
+    loadingEl.textContent = loadingMessages[msgIdx];
+  }, 1800);
+
+  const concern = document.getElementById('clientConcern').value || 'General wellness support';
+  const systemArr = state.selections['system'];
+  const systems = Array.isArray(systemArr) ? systemArr.join(', ') : (systemArr || 'general');
+
+  const prompt = `You are a clinical herbalist and educator at the Sacred Alchemist Herbal Alchemy Workshop by Gaja Bohème. You are creating a personalized herbal formula for a wellness practitioner's client.
+
+${HERB_DB}
+
+CLIENT PROFILE:
+- Body temperature tendency: ${state.selections['body-temp'] || 'not specified'}
+- Energy pattern: ${state.selections['energy'] || 'not specified'}
+- Skin and body presentation: ${state.selections['skin'] || 'not specified'}
+- Stress response: ${state.selections['stress'] || 'not specified'}
+- Tissue temperature state: ${state.selections['temp-state'] || 'neutral'}
+- Tissue moisture state: ${state.selections['moist-state'] || 'balanced'}
+- Tissue tension state: ${state.selections['tension-state'] || 'normal tone'}
+- Body systems to address: ${systems}
+- Formula format: ${state.selections['format'] || 'infused herbal oil'}
+- Client intention/concern: ${concern}
+
+Based on this profile, create a complete herbal formula. You MUST respond in valid JSON only, with NO markdown, no code blocks, no extra text. Use this exact structure:
+
+{
+  "formulaName": "A poetic, evocative 3-5 word name for this formula in the Sacred Alchemist tradition",
+  "formulaSubtitle": "A short descriptive subtitle (e.g. 'Womb Restore Oil' or 'Lymphatic Release Blend')",
+  "profileAnalysis": "2-3 sentences interpreting the client's constitution and energetic pattern. Name the likely constitution (Pitta/Kapha/Vata) and explain the tissue state clearly. Connect this to why specific actions are needed.",
+  "carrierOils": [
+    {
+      "name": "Oil name",
+      "percentage": "60%",
+      "role": "Primary carrier",
+      "why": "One sentence explaining why this oil was chosen for this specific client profile"
+    }
+  ],
+  "herbs": [
+    {
+      "name": "Herb name",
+      "role": "Primary herb",
+      "amount": "2",
+      "unit": "parts",
+      "why": "One sentence explaining the action this herb provides and why it matches the client profile"
+    }
+  ],
+  "instructions": [
+    "Step 1 instruction",
+    "Step 2 instruction",
+    "Step 3 instruction",
+    "Step 4 instruction"
+  ],
+  "ritualNote": "A 2-3 sentence ritual intention or affirmation for this formula, written in the voice of the Sacred Alchemist tradition. Poetic, grounded, not overly mystical."
+}
+
+Rules:
+- Use ONLY herbs from the provided herb database
+- Use ONLY carrier oils from the provided carrier oil list
+- Include 1-2 carrier oils with percentages that add to 100%
+- Include 4-6 herbs: 1 primary, 2-3 secondary, 1 ritual/energetic
+- Parts should be whole numbers (1, 2, 3)
+- Instructions should be specific to the formula format selected
+- Keep all text grounded, professional, and educational
+- Do not include any safety claims or medical language`;
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+
+    clearInterval(loadingInterval);
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const raw = data.content.map(b => b.text || '').join('').trim();
+    const clean = raw.replace(/```json|```/g, '').trim();
+    let formula = JSON.parse(clean);
+    const { formula: validatedFormula, warnings } = validateFormula(formula);
+    formula = validatedFormula;
+
+    document.getElementById('loadingState').style.display = 'none';
+    if (warnings.length > 0) {
+      console.warn('Formula validation warnings:', warnings);
+    }
+    renderFormula(formula);
+
+  } catch (err) {
+    clearInterval(loadingInterval);
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'block';
+    document.getElementById('errorMsg').textContent = `Something went wrong generating your formula. Please try again. (${err.message})`;
+    document.getElementById('step4').style.display = 'block';
+    btn.disabled = false;
+  }
+}
+
+// ── Render formula ─────────────────────────────────────────────────────────
+function renderFormula(f) {
+  document.getElementById('formulaName').textContent = f.formulaName || 'Sacred Formula';
+  document.getElementById('formulaSubtitle').textContent = f.formulaSubtitle || 'Sacred Alchemist Formula';
+  document.getElementById('profileAnalysis').innerHTML = `<p>${f.profileAnalysis}</p>`;
+
+  // Carrier oils
+  let carriersHtml = '';
+  (f.carrierOils || []).forEach(oil => {
+    carriersHtml += `
+      <div class="ingredient-row">
+        <div>
+          <div class="ingredient-role">${oil.role || 'Carrier'}</div>
+          <div class="ingredient-name">${oil.name}</div>
+          <div class="ingredient-why">${oil.why}</div>
+        </div>
+        <div class="ingredient-amount">${oil.percentage}<span class="ingredient-unit">of base</span></div>
+      </div>`;
+  });
+  document.getElementById('carrierOils').innerHTML = carriersHtml;
+
+  // Herbs
+  let herbsHtml = '';
+  (f.herbs || []).forEach(herb => {
+    herbsHtml += `
+      <div class="ingredient-row">
+        <div>
+          <div class="ingredient-role">${herb.role || 'Herb'}</div>
+          <div class="ingredient-name">${herb.name}</div>
+          <div class="ingredient-why">${herb.why}</div>
+        </div>
+        <div class="ingredient-amount">${herb.amount}<span class="ingredient-unit">${herb.unit || 'parts'}</span></div>
+      </div>`;
+  });
+  document.getElementById('herbSelection').innerHTML = herbsHtml;
+
+  // Instructions
+  let instrHtml = '';
+  (f.instructions || []).forEach((step, i) => {
+    instrHtml += `
+      <div class="instruction-step">
+        <div class="step-num">${i + 1}</div>
+        <div class="step-text">${step}</div>
+      </div>`;
+  });
+  document.getElementById('instructions').innerHTML = instrHtml;
+
+  // Ritual note
+  document.getElementById('ritualNote').textContent = f.ritualNote || '';
+
+  // Show output
+  const output = document.getElementById('formulaOutput');
+  output.classList.add('visible');
+  output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Reset ──────────────────────────────────────────────────────────────────
+function resetAll() {
+  // Clear selections
+  Object.keys(state.selections).forEach(k => delete state.selections[k]);
+  document.querySelectorAll('.option-pill.selected').forEach(p => p.classList.remove('selected'));
+  document.getElementById('clientConcern').value = '';
+
+  // Hide output
+  document.getElementById('formulaOutput').classList.remove('visible');
+  document.getElementById('errorState').style.display = 'none';
+  document.getElementById('loadingState').style.display = 'none';
+
+  // Reset generate button
+  const btn = document.getElementById('generateBtn');
+  if (btn) btn.disabled = false;
+
+  goToStep(1);
+}
+</script>
+</body>
+</html>
