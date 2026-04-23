@@ -584,6 +584,51 @@
     line-height: 1.7;
   }
 
+  /* Compass */
+  .compass-direction-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border-radius: 2px;
+    margin-bottom: 1.25rem;
+  }
+  .compass-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .compass-direction-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  .compass-why {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+  .compass-protocol {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1rem 1.25rem;
+  }
+  .compass-protocol-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .compass-protocol-text {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+
   /* Action buttons */
   .action-row {
     display: flex;
@@ -967,6 +1012,18 @@
       </div>
     </div>
 
+    <div class="formula-section" id="compassSection">
+      <div class="formula-section-header" id="compassHeader">
+        <div class="section-icon" id="compassIcon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+        </div>
+        <h3 id="compassTitle">Vortex Somatic Compass</h3>
+      </div>
+      <div class="formula-section-body">
+        <div id="compassDirection"></div>
+      </div>
+    </div>
+
     <div class="scope-note">
       This formula is an educational tool for wellness practitioners. It is not medical advice and does not constitute a diagnosis or treatment plan. Always work within your scope of practice.
     </div>
@@ -1269,7 +1326,12 @@ Based on this profile, create a complete herbal formula. You MUST respond in val
     "Step 3 instruction",
     "Step 4 instruction"
   ],
-  "ritualNote": "A 2-3 sentence ritual intention or affirmation for this formula, written in the voice of the Sacred Alchemist tradition. Poetic, grounded, not overly mystical."
+  "ritualNote": "A 2-3 sentence ritual intention or affirmation for this formula, written in the voice of the Sacred Alchemist tradition. Poetic, grounded, not overly mystical.",
+  "compass": {
+    "direction": "One of exactly these four words: Connect, Shine, Nourish, or Release",
+    "why": "2 sentences explaining why this direction was assigned based on the client profile and formula. Connect the tissue state and constitution to the compass direction.",
+    "protocol": "2 sentences describing how to use this compass direction in an actual session with this client. Specific, practical, bodywork-adjacent language. For example what to do before applying the oil, how to apply it, what to invite the client to do."
+  }
 }
 
 Rules:
@@ -1283,7 +1345,8 @@ Rules:
 - For Bath Blend: instructions should cover combining dried herbs with salts and any powders in a bowl, packaging in muslin bags or jars, how to use in the bath
 - For Herbal Steam: instructions should cover selecting a heat-safe bowl, adding dried herbs, pouring just-boiled water, tent with a towel over head, steam for 10-15 minutes, keep eyes closed
 - Keep all text grounded, professional, and educational
-- Do not include any safety claims or medical language`;
+- Do not include any safety claims or medical language
+- For the compass direction, assign exactly one of these four: Connect (grounding, opening, creating safety and receptivity), Shine (activating, energizing, illuminating blocked potential), Nourish (replenishing, feeding depleted tissue and spirit, restoring reserves), Release (moving stagnation, clearing heat or congestion, liberating held emotion or tension). Choose based on what the client needs MOST right now given their tissue state and constitution`;
 
   try {
     const response = await fetch('/api/generate', {
@@ -1379,6 +1442,34 @@ function renderFormula(f) {
 
   // Ritual note
   document.getElementById('ritualNote').textContent = f.ritualNote || '';
+
+  // Compass
+  if (f.compass) {
+    const dir = f.compass.direction || 'Nourish';
+    const compassColors = {
+      'Connect': { bg: '#E1F5EE', dot: '#1D9E75', text: '#085041', headerBg: '#085041' },
+      'Shine':   { bg: '#FAEEDA', dot: '#BA7517', text: '#633806', headerBg: '#633806' },
+      'Nourish': { bg: '#EEEDFE', dot: '#7F77DD', text: '#26215C', headerBg: '#26215C' },
+      'Release': { bg: '#FAECE7', dot: '#D85A30', text: '#4A1B0C', headerBg: '#4A1B0C' },
+    };
+    const c = compassColors[dir] || compassColors['Nourish'];
+
+    document.getElementById('compassHeader').style.background = c.bg;
+    document.getElementById('compassIcon').style.background = c.dot;
+    document.getElementById('compassTitle').textContent = 'Vortex Somatic Compass';
+
+    document.getElementById('compassDirection').innerHTML = `
+      <div class="compass-direction-badge" style="background:${c.bg}">
+        <div class="compass-dot" style="background:${c.dot}"></div>
+        <span class="compass-direction-name" style="color:${c.text}">${dir}</span>
+      </div>
+      <p class="compass-why">${f.compass.why}</p>
+      <div class="compass-protocol">
+        <div class="compass-protocol-label" style="color:${c.dot}">In session</div>
+        <p class="compass-protocol-text">${f.compass.protocol}</p>
+      </div>
+    `;
+  }
 
   // Show output
   const output = document.getElementById('formulaOutput');
