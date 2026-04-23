@@ -988,65 +988,46 @@ const state = {
 
 // ── Herb database ──────────────────────────────────────────────────────────
 const HERB_DB = `
-AVAILABLE HERBS (use ONLY these herbs in formulas):
-Hibiscus — cooling, astringent, anti-inflammatory, lymphatic; high in antioxidants; Pitta-balancing
+AVAILABLE HERBS — USE ONLY THESE EXACT HERBS. DO NOT suggest any herb not on this list under any circumstances:
+
+OILS AND FORMULAS:
 Rose — astringent, anti-inflammatory, nervine, emotional heart opener; cooling and moistening; all constitutions
-Saint John's Wort — nervine, anti-inflammatory, topical wound healer, antidepressant; warming; Vata/Kapha
-Thyme — antimicrobial, expectorant, stimulating; warming and drying; Kapha
-Lemongrass — digestive, antimicrobial, cooling, uplifting; cooling; Pitta/Kapha
-Anise — digestive, expectorant, antispasmodic; warming; Vata/Kapha
-Black Pepper — stimulant, carminative, rubefacient; heating; Kapha
-Lalo (Jute Leaf) — nutritive, mucilaginous, mineral-rich, moistening; nourishing; Vata
-Lemon Balm — relaxing nervine, antiviral, digestive, cooling; cooling and moistening; Pitta/Vata
-Motherwort — uterine tonic, cardiac nervine, emmenagogue; cooling; womb support
-Juniper — diuretic, antimicrobial, warming stimulant; drying and warming; Kapha
-White Peony Imperial — blood tonic, antispasmodic, womb supportive; cooling; TCM tradition
-Tulsi (Holy Basil) — adaptogen, nervine, antimicrobial, immunomodulating; warming; all constitutions
-Ground Ginger — warming, stimulant, anti-inflammatory, carminative, circulatory; heating; Vata/Kapha
-Frankincense — anti-inflammatory, wound healing, ceremonial; warming; all constitutions
-Myrrh — antimicrobial, astringent, wound healing, ceremonial; warming and drying
-Dragon's Blood — astringent, wound healing, protective; ceremonial resin
-Cornflower — anti-inflammatory, soothing, lymphatic; cooling
-Chaste Berry (Vitex) — hormonal balancer, progesterone support; cooling; womb/reproductive
-Cinnamon Sticks — warming, stimulant, antimicrobial, circulatory; heating; Vata/Kapha
-Chamomile — relaxing nervine, anti-inflammatory, antispasmodic, digestive; cooling; Pitta/Vata
-Cleavers — lymphatic, diuretic, alterative, cooling; cooling and moistening; lymphatic system
-Burdock Root — alterative, lymphatic, liver support, nutritive; cooling; Pitta/Kapha
-Amla Powder — antioxidant, rejuvenating, Pitta-balancing, high Vitamin C; cooling; Pitta
-Mullein Leaf — expectorant, demulcent, respiratory; moistening; Kapha/Vata
-Neem Leaf — bitter, alterative, antimicrobial, cooling; bitter cooling; Pitta/Kapha
-Plantain Leaf — wound healing, drawing, anti-inflammatory, demulcent; cooling
-Peppermint — cooling, digestive, antispasmodic, analgesic; cooling; Pitta
-Red Clover — lymphatic, alterative, phytoestrogen, nutritive; cooling; hormonal/lymphatic
-Saw Palmetto — reproductive tonic, anti-androgenic; neutral; womb/reproductive
-Spearmint — digestive, cooling, milder than peppermint; cooling; Pitta
-Stinging Nettle — nutritive tonic, diuretic, anti-inflammatory, mineral-rich; neutral; all constitutions
-Rosemary — stimulant, circulatory, antimicrobial, cognitive; warming; Kapha/Vata
-Ground Turmeric — anti-inflammatory, alterative, liver support; warming; all constitutions
-White Copal — ceremonial, purifying, protective resin; ritual use
-Agrimony — astringent, digestive, liver support, drying; drying; Kapha/Pitta
-Angelica Root — warming, circulatory, digestive, uterine; heating; Vata/Kapha
-Ashwagandha — adaptogen, nervine tonic, nutritive, grounding; warming; Vata/Kapha
-Dandelion Root — liver support, alterative, bitter digestive, diuretic; cooling; Pitta/Kapha
-Cloves — warming, analgesic, antimicrobial, stimulant; heating; Kapha/Vata
-Dried Lemon — uplifting, astringent, cleansing; cooling; Florida water and ritual
-Echinacea — immune stimulant, lymphatic, anti-inflammatory; cooling; immune support
-Eucalyptus — expectorant, antimicrobial, cooling sensation; steam and topical
-Oregano — antimicrobial, warming, respiratory; heating; Kapha
-Red Raspberry Leaf — nutritive, uterine tonic, astringent, mineral-rich; cooling; womb care
-Sage — astringent, antimicrobial, drying, hormonal; drying/cooling; Kapha/menopausal
-Yarrow — astringent, diaphoretic, wound healing, lymphatic; neutral to cooling
 Lavender — relaxing nervine, antimicrobial, antispasmodic, skin healing; cooling; all constitutions
 Calendula — anti-inflammatory, skin healing, lymphatic, gentle; cooling; all constitutions
-Arnica Flowers — topical anti-inflammatory, bruising, muscle pain (EXTERNAL USE ONLY); Kapha
+Chamomile — relaxing nervine, anti-inflammatory, antispasmodic, digestive; cooling; Pitta/Vata
+Cleavers — lymphatic, diuretic, alterative; cooling and moistening; essential for lymphatic formulas
+Rosemary — stimulant, circulatory, antimicrobial; warming; Kapha/Vata
+Tulsi (Holy Basil) — adaptogen, nervine, antimicrobial, immunomodulating; warming; all constitutions
+Yarrow — astringent, diaphoretic, wound healing, lymphatic; neutral to cooling
+Red Raspberry Leaf — nutritive, uterine tonic, astringent, mineral-rich; cooling; womb care
+Saw Palmetto — reproductive tonic; neutral; womb and hormonal support
+Agrimony — astringent, digestive, liver support, drying; Kapha/Pitta
+Frankincense — anti-inflammatory, wound healing, ceremonial; warming; all constitutions
+Juniper — diuretic, antimicrobial, warming stimulant; drying and warming; Kapha
 
-AVAILABLE CARRIER OILS:
-Castor Oil — heavy, drawing, lymphatic movement, anti-inflammatory, ricinoleic acid; use 30-60% in lymphatic/womb formulas
+STEAM HERBS:
+Peppermint — cooling, digestive, antispasmodic, analgesic; cooling; Pitta (steam and topical only)
+Eucalyptus — expectorant, antimicrobial, cooling sensation; steam and topical only
+
+FLORIDA WATER AND RITUAL:
+Dried Lemon — uplifting, astringent, cleansing; cooling; ritual and Florida water
+Lemongrass — digestive, antimicrobial, cooling, uplifting; cooling; Pitta/Kapha
+Angelica Root — warming, circulatory, uterine; heating; Vata/Kapha; ritual
+Dragon's Blood — astringent, wound healing, protective; ceremonial resin
+
+WARMING SPICES (use sparingly — accent herbs for energetics teaching and bath blends):
+Cinnamon — warming, stimulant, antimicrobial, circulatory; heating; Vata/Kapha
+Anise — digestive, expectorant, antispasmodic; warming; Vata/Kapha
+Cloves — warming, analgesic, antimicrobial, stimulant; heating; Kapha/Vata
+
+AVAILABLE CARRIER OILS — USE ONLY THESE:
+Castor Oil — heavy, drawing, lymphatic movement, anti-inflammatory; use 30-60% in lymphatic/womb formulas
 Sesame Oil — warming, grounding, deeply penetrating; Ayurvedic gold standard; use 30-60% in Vata/Kapha formulas
-Jojoba Oil — technically a wax, extremely stable, skin-balancing, all constitutions; good base for all types
-Sunflower Oil — light, cooling, Pitta-friendly, high linoleic acid; good for inflamed skin
-Olive Oil — medium weight, earthy, moistening and nutritive; traditional in Curanderismo
-Sweet Almond Oil — light, emotionally softening, nervous system; good for nervine and emotional formulas
+Jojoba Oil — stable, skin-balancing; good base for all constitutions
+Sunflower Oil — light, cooling, Pitta-friendly; good for inflamed or sensitive skin
+Sweet Almond Oil — light, emotionally softening; excellent for nervous system and emotional formulas
+
+CRITICAL RULE: If a formula would benefit from an herb not on this list, choose the closest available herb instead. Never recommend an herb not listed above.
 `;
 
 // ── Navigation ─────────────────────────────────────────────────────────────
@@ -1180,20 +1161,16 @@ function buildProfileSummary() {
 
 // ── Herb validation ───────────────────────────────────────────────────────
 const VALID_HERBS = [
-  'hibiscus','rose','saint john\'s wort','thyme','lemongrass','anise',
-  'black pepper','lalo','lemon balm','motherwort','juniper','white peony imperial',
-  'tulsi','ground ginger','ginger','frankincense','myrrh','dragon\'s blood',
-  'cornflower','chaste berry','vitex','cinnamon','chamomile','cleavers',
-  'burdock root','amla powder','amla','mullein leaf','mullein','neem leaf','neem',
-  'plantain leaf','plantain','peppermint','red clover','saw palmetto','spearmint',
-  'stinging nettle','nettle','rosemary','ground turmeric','turmeric','white copal',
-  'agrimony','angelica root','ashwagandha','dandelion root','dandelion','cloves',
-  'dried lemon','echinacea','eucalyptus','oregano','red raspberry leaf',
-  'red raspberry','sage','yarrow','lavender','calendula','arnica'
+  'rose','lavender','calendula','chamomile','cleavers','rosemary',
+  'tulsi','holy basil','yarrow','red raspberry leaf','red raspberry',
+  'saw palmetto','agrimony','frankincense','juniper',
+  'peppermint','eucalyptus',
+  'dried lemon','lemongrass','angelica root','dragon\'s blood',
+  'cinnamon','anise','cloves'
 ];
 const VALID_CARRIERS = [
   'castor oil','castor','sesame oil','sesame','jojoba oil','jojoba',
-  'sunflower oil','sunflower','olive oil','olive','sweet almond oil','sweet almond'
+  'sunflower oil','sunflower','sweet almond oil','sweet almond'
 ];
 function validateFormula(formula) {
   const warnings = [];
