@@ -35,7 +35,7 @@
     content: '';
     position: fixed;
     inset: 0;
-    background: 
+    background:
       radial-gradient(ellipse at 10% 20%, rgba(201,168,76,0.06) 0%, transparent 50%),
       radial-gradient(ellipse at 90% 80%, rgba(196,134,122,0.06) 0%, transparent 50%);
     pointer-events: none;
@@ -88,6 +88,14 @@
   .concern-input:focus { border-color: var(--gold); background: white; }
   .concern-input::placeholder { color: var(--ink-soft); }
 
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+  .sensitivity-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sensitivity-check { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--border-strong); border-radius: 2px; font-size: 12px; color: var(--ink-mid); background: var(--cream); cursor: pointer; transition: all 0.2s; user-select: none; }
+  .sensitivity-check:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .sensitivity-check.selected { background: var(--gold-pale); border-color: var(--gold); color: var(--ink); font-weight: 500; }
+  .sensitivity-check input[type="checkbox"] { accent-color: var(--gold); width: 13px; height: 13px; cursor: pointer; }
+
   .generate-btn { width: 100%; padding: 16px; background: var(--ink); color: var(--gold-light); border: none; border-radius: 2px; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-top: 2rem; position: relative; overflow: hidden; }
   .generate-btn:hover:not(:disabled) { background: var(--ink-mid); color: var(--gold); }
   .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -105,6 +113,7 @@
 
   .formula-header { text-align: center; padding: 2.5rem; background: var(--ink); color: var(--gold-light); border-radius: 2px; margin-bottom: 1.5rem; position: relative; overflow: hidden; }
   .formula-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%); }
+  .formula-type-badge { font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; position: relative; }
   .formula-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 300; font-style: italic; color: var(--gold-light); margin-bottom: 0.5rem; position: relative; }
   .formula-subtitle { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,213,163,0.6); position: relative; }
   .formula-rule { width: 40px; height: 1px; background: var(--gold); margin: 1rem auto; opacity: 0.4; position: relative; }
@@ -133,7 +142,11 @@
   .step-num { width: 22px; height: 22px; background: var(--gold-pale); border: 1px solid var(--border-strong); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--gold); flex-shrink: 0; margin-top: 1px; }
   .step-text { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
 
+  .aromatic-profile-box { background: var(--cream); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: 0 2px 2px 0; padding: 1rem 1.25rem; font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; color: var(--ink-mid); line-height: 1.7; }
+
   .ritual-note { background: var(--gold-pale); border-left: 3px solid var(--gold); padding: 1rem 1.25rem; border-radius: 0 2px 2px 0; font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; color: var(--ink-mid); line-height: 1.7; }
+
+  .cautions-note { background: #FFF8F0; border: 1px solid rgba(201,168,76,0.4); border-left: 3px solid #D4853A; border-radius: 0 2px 2px 0; padding: 1rem 1.25rem; font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
 
   .compass-direction-badge { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 2px; margin-bottom: 1.25rem; }
   .compass-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
@@ -143,55 +156,16 @@
   .compass-protocol-label { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
   .compass-protocol-text { font-size: 13px; color: var(--ink-mid); line-height: 1.7; }
 
-  /* NEW: Real measurements box */
-  .measurements-box {
-    background: var(--gold-pale);
-    border: 1px solid var(--border-strong);
-    border-radius: 2px;
-    padding: 1.25rem 1.5rem;
-    margin-top: 1.25rem;
-  }
-  .measurements-box-title {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.75rem;
-  }
-  .measurements-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  .measurements-col-title {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 4px;
-  }
-  .measurements-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 3px 0;
-    border-bottom: 1px solid rgba(201,168,76,0.1);
-    font-size: 12px;
-  }
+  .measurements-box { background: var(--gold-pale); border: 1px solid var(--border-strong); border-radius: 2px; padding: 1.25rem 1.5rem; margin-top: 1.25rem; }
+  .measurements-box-title { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+  .measurements-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .measurements-col-title { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+  .measurements-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 0; border-bottom: 1px solid rgba(201,168,76,0.1); font-size: 12px; }
   .measurements-row:last-child { border-bottom: none; }
   .measurements-herb { color: var(--ink-mid); }
   .measurements-amount { font-weight: 500; color: var(--ink); }
-  .measurements-note {
-    font-size: 11px;
-    color: var(--ink-soft);
-    margin-top: 0.75rem;
-    font-style: italic;
-    line-height: 1.5;
-  }
+  .measurements-note { font-size: 11px; color: var(--ink-soft); margin-top: 0.75rem; font-style: italic; line-height: 1.5; }
+  .measurements-single { display: flex; flex-direction: column; gap: 4px; }
 
   .action-row { display: flex; gap: 12px; margin-top: 1.5rem; }
   .btn-secondary { flex: 1; padding: 12px; border: 1px solid var(--border-strong); border-radius: 2px; background: transparent; font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-mid); cursor: pointer; transition: all 0.2s; }
@@ -201,16 +175,8 @@
   .error-msg { background: #FFF5F5; border: 1px solid #FFD0CC; border-radius: 2px; padding: 1rem 1.5rem; font-size: 13px; color: #8B2E2E; margin-top: 1rem; }
 
   .formula-prose { font-size: 14px; color: var(--ink-mid); line-height: 1.75; }
-  .formula-prose h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 500; color: var(--ink); margin: 1.25rem 0 0.5rem; }
-  .formula-prose h4:first-child { margin-top: 0; }
   .formula-prose p { margin-bottom: 0.75rem; }
   .formula-prose p:last-child { margin-bottom: 0; }
-  .formula-prose ul { list-style: none; margin: 0.5rem 0 0.75rem; padding: 0; }
-  .formula-prose ul li { padding: 0.4rem 0 0.4rem 1.25rem; position: relative; border-bottom: 1px solid var(--border); font-size: 13px; }
-  .formula-prose ul li:last-child { border-bottom: none; }
-  .formula-prose ul li::before { content: '—'; position: absolute; left: 0; color: var(--gold); font-size: 11px; }
-  .formula-prose strong { font-weight: 500; color: var(--ink); }
-  .formula-prose em { font-style: italic; color: var(--ink-soft); }
 
   @media (max-width: 600px) {
     .container { padding: 2rem 1rem 4rem; }
@@ -234,7 +200,7 @@
     <p class="header-eyebrow">Sacred Alchemist · Gaja Bohème</p>
     <h1>Herbal Formula <em>Generator</em></h1>
     <div class="header-rule"></div>
-    <p>Answer a few questions about your client and receive a custom herbal oil formula with carrier ratios, herb selections, and the reasoning behind every choice.</p>
+    <p>Answer a few questions about your client and receive a custom herbal formula grounded in constitutional energetics, delivery-method safety, and sensory intelligence.</p>
   </div>
 
   <div class="steps-nav" id="stepsNav">
@@ -286,6 +252,20 @@
         <div class="option-pill" data-value="reactive, intense, prone to anger or frustration under pressure">Reactive, prone to frustration</div>
         <div class="option-pill" data-value="withdraws, resistant to change, holds onto things">Withdraws, holds onto things</div>
         <div class="option-pill" data-value="anxious, overwhelmed, overthinks, difficulty grounding">Anxious, overwhelmed, hard to ground</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="question-block">
+      <div class="question-label">Allergies &amp; sensitivities — select any that apply</div>
+      <div class="sensitivity-grid" id="sensitivityGrid">
+        <label class="sensitivity-check"><input type="checkbox" value="nut-allergy"> Nut allergy</label>
+        <label class="sensitivity-check"><input type="checkbox" value="fragrance-sensitive"> Fragrance sensitive</label>
+        <label class="sensitivity-check"><input type="checkbox" value="reactive-skin"> Reactive / sensitive skin</label>
+        <label class="sensitivity-check"><input type="checkbox" value="pregnancy"> Pregnancy</label>
+        <label class="sensitivity-check"><input type="checkbox" value="blood-thinners"> On blood thinners</label>
+        <label class="sensitivity-check"><input type="checkbox" value="hormone-therapy"> Hormone therapy</label>
       </div>
     </div>
 
@@ -342,7 +322,7 @@
   <!-- STEP 3 -->
   <div class="card" id="step3" style="display:none">
     <div class="card-label">Step 3 of 4</div>
-    <h2>Focus & Intention</h2>
+    <h2>Focus &amp; Intention</h2>
     <p>What body system or experience are we creating this formula for?</p>
 
     <div class="question-block">
@@ -357,6 +337,7 @@
         <div class="option-pill" data-value="musculoskeletal and joints">Musculoskeletal</div>
         <div class="option-pill" data-value="immune system">Immune</div>
         <div class="option-pill" data-value="emotional and energetic body">Emotional / Energetic</div>
+        <div class="option-pill" data-value="hair and scalp">Hair &amp; Scalp</div>
       </div>
     </div>
 
@@ -368,19 +349,67 @@
     <div class="question-block">
       <div class="question-label">Formula type</div>
       <div class="options-grid" data-group="format" data-multi="false">
-        <div class="option-pill" data-value="infused herbal oil">Infused Herbal Oil</div>
-        <div class="option-pill" data-value="ritual body oil blend">Ritual Body Oil</div>
-        <div class="option-pill" data-value="bath blend (dried herbs and salts)">Bath Blend</div>
-        <div class="option-pill" data-value="herbal steam blend">Herbal Steam</div>
+        <div class="option-pill" data-value="infused body oil">Infused Body Oil</div>
+        <div class="option-pill" data-value="ritual body oil">Ritual Body Oil</div>
+        <div class="option-pill" data-value="bath blend">Bath Blend</div>
+        <div class="option-pill" data-value="facial steam">Facial Steam</div>
+        <div class="option-pill" data-value="full body herbal steam">Full Body Steam</div>
+        <div class="option-pill" data-value="yoni steam">Yoni Steam</div>
       </div>
     </div>
 
+    <!-- Infusion method (infused body oil only) -->
     <div class="question-block" id="infusion-method-block" style="display:none">
       <div class="question-label">Infusion method</div>
       <div class="options-grid" data-group="infusion-method" data-multi="false">
-        <div class="option-pill" data-value="Levo machine: overnight infusion at 115F for 8-10 hours, dried herbs only, press and strain in the morning using the Levo filter basket, bottle while warm">Levo Machine (overnight)</div>
-        <div class="option-pill" data-value="slow stovetop infusion: low heat never boiling, 4-6 hours, stir occasionally, strain through cheesecloth">Slow Stovetop (4-6 hrs)</div>
-        <div class="option-pill" data-value="cold sun infusion: fill jar with dried herbs, cover completely with oil, seal and place in warm sunny spot for 4-6 weeks, strain before use">Cold / Sun Infusion (4-6 weeks)</div>
+        <div class="option-pill" data-value="Levo machine: overnight infusion at 115°F for 8-10 hours, dried herbs only, press and strain through the Levo filter basket in the morning, bottle while warm">Levo Machine (overnight)</div>
+        <div class="option-pill" data-value="slow stovetop infusion: low heat never boiling, 4-6 hours, stir occasionally, strain through cheesecloth">Slow Stovetop (4–6 hrs)</div>
+        <div class="option-pill" data-value="cold sun infusion: fill jar with dried herbs, cover completely with oil, seal and place in warm sunny spot for 4-6 weeks, strain before use">Cold / Sun Infusion (4–6 weeks)</div>
+      </div>
+    </div>
+
+    <!-- Steam sensitivity (facial / full body steam) -->
+    <div class="question-block" id="steam-sensitivity-block" style="display:none">
+      <div class="question-label">Respiratory / skin sensitivity level</div>
+      <div class="options-grid" data-group="steam-sensitivity" data-multi="false">
+        <div class="option-pill" data-value="standard sensitivity — can tolerate stronger aromatics">Standard</div>
+        <div class="option-pill" data-value="moderately sensitive — prefer gentler aromatics">Moderately sensitive</div>
+        <div class="option-pill" data-value="highly sensitive or reactive — only the most gentle herbs">Highly sensitive</div>
+      </div>
+    </div>
+
+    <!-- Congestion level (full body steam only) -->
+    <div class="question-block" id="congestion-block" style="display:none">
+      <div class="question-label">Current respiratory / congestion level</div>
+      <div class="options-grid" data-group="congestion" data-multi="false">
+        <div class="option-pill" data-value="clear, wellness and relaxation focus">Clear — relaxation focus</div>
+        <div class="option-pill" data-value="mildly congested, some tightness">Mildly congested</div>
+        <div class="option-pill" data-value="quite congested, active respiratory support needed">Quite congested</div>
+      </div>
+    </div>
+
+    <!-- Cycle phase (yoni steam only) -->
+    <div class="question-block" id="cycle-phase-block" style="display:none">
+      <div class="question-label">Current cycle phase</div>
+      <div class="options-grid" data-group="cycle-phase" data-multi="false">
+        <div class="option-pill" data-value="pre-menstrual phase — approaching bleed">Pre-menstrual</div>
+        <div class="option-pill" data-value="menstrual phase — actively bleeding">Menstrual</div>
+        <div class="option-pill" data-value="post-menstrual / follicular phase — rebuilding">Post-menstrual / Follicular</div>
+        <div class="option-pill" data-value="mid-cycle / ovulation">Mid-cycle / Ovulation</div>
+        <div class="option-pill" data-value="irregular or unknown cycle">Irregular / Unknown</div>
+        <div class="option-pill" data-value="not currently cycling — perimenopause, postmenopause, or other">Not cycling</div>
+      </div>
+    </div>
+
+    <!-- Bath intention (bath blend only) -->
+    <div class="question-block" id="bath-intention-block" style="display:none">
+      <div class="question-label">Primary bath intention</div>
+      <div class="options-grid" data-group="bath-intention" data-multi="false">
+        <div class="option-pill" data-value="nervous system relaxation and stress relief">Nervous system / Relaxation</div>
+        <div class="option-pill" data-value="skin care, softening, and nourishment">Skin care</div>
+        <div class="option-pill" data-value="lymphatic and detox support">Lymphatic / Detox</div>
+        <div class="option-pill" data-value="womb and reproductive care">Womb care</div>
+        <div class="option-pill" data-value="sensory ritual and ceremonial">Sensory ritual</div>
       </div>
     </div>
 
@@ -420,6 +449,7 @@
   <!-- Formula Output -->
   <div class="formula-output" id="formulaOutput">
     <div class="formula-header">
+      <div class="formula-type-badge" id="formulaTypeBadge">Formula</div>
       <div class="formula-name" id="formulaName">—</div>
       <div class="formula-rule"></div>
       <div class="formula-subtitle" id="formulaSubtitle">Sacred Alchemist Formula</div>
@@ -433,7 +463,7 @@
       <div class="formula-section-body"><div class="formula-prose" id="profileAnalysis"></div></div>
     </div>
 
-    <div class="formula-section">
+    <div class="formula-section" id="carrierSection">
       <div class="formula-section-header">
         <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M9.5 6.5v3h-3v-3h3M11 5H5v6h6V5zm-1.5 9.5v3h-3v-3h3M11 13H5v6h6v-6zm6.5-6.5v3h-3v-3h3M19 5h-6v6h6V5zm-6 8h1.5v1.5H13V13zm1.5 1.5H16V16h-1.5v-1.5zM16 13h1.5v1.5H16V13zm-3 3h1.5v1.5H13V16zm1.5 1.5H16V19h-1.5v-1.5zM16 16h1.5v1.5H16V16zm1.5-1.5H19V16h-1.5v-1.5zm0 3H19V19h-1.5v-1.5z"/></svg></div>
         <h3>Carrier Oil Base</h3>
@@ -447,6 +477,14 @@
         <h3>Herb Selection</h3>
       </div>
       <div class="formula-section-body"><div id="herbSelection"></div></div>
+    </div>
+
+    <div class="formula-section">
+      <div class="formula-section-header">
+        <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg></div>
+        <h3>Sensory &amp; Aromatic Profile</h3>
+      </div>
+      <div class="formula-section-body"><div class="aromatic-profile-box" id="aromaticProfile"></div></div>
     </div>
 
     <div class="formula-section">
@@ -465,10 +503,18 @@
       <div class="formula-section-body"><div class="ritual-note" id="ritualNote"></div></div>
     </div>
 
+    <div class="formula-section" id="cautionsSection" style="display:none">
+      <div class="formula-section-header">
+        <div class="section-icon" style="background:#D4853A"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></div>
+        <h3>Cautions &amp; Considerations</h3>
+      </div>
+      <div class="formula-section-body"><div class="cautions-note" id="cautionsNote"></div></div>
+    </div>
+
     <div class="formula-section" id="compassSection">
       <div class="formula-section-header" id="compassHeader">
         <div class="section-icon" id="compassIcon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg></div>
-        <h3 id="compassTitle">Vortex Somatic Compass</h3>
+        <h3>Vortex Somatic Compass</h3>
       </div>
       <div class="formula-section-body"><div id="compassDirection"></div></div>
     </div>
@@ -488,52 +534,41 @@
 <script>
 const state = { selections: {}, currentStep: 1 };
 
-const HERB_DB = `
-AVAILABLE HERBS — USE ONLY THESE EXACT HERBS:
+const VALID_HERBS = [
+  'agrimony','amla','angelica root','angelica','anise','arnica','ashwagandha',
+  'bhringraj','brahmi','burdock root','burdock',
+  'calendula','cardamom','chamomile','chasteberry','chickweed','cinnamon','cleavers',
+  'cloves','comfrey','copal','cornflower',
+  "dragon's blood",'dandelion root','dandelion','dried lemon',
+  'echinacea','elderflower','eucalyptus',
+  'fenugreek','frankincense','boswellia',
+  'ginger root','ground ginger','ginger','green tea',
+  'helichrysum','hibiscus','horsetail',
+  'jasmine','juniper',
+  'lavender','lemon balm','lemongrass',
+  'marshmallow root','marshmallow','meadowsweet','motherwort','mugwort','mullein',
+  'neem leaf','neem','nettle',
+  'oolong','oregano',
+  'peppermint','plantain leaf','plantain',
+  'red clover','red raspberry leaf','red raspberry','rose petals','rose','rosemary','rue',
+  'sage','saw palmetto','slippery elm','spearmint',"st. john's wort",'sweet orange peel',
+  'thyme','tulsi','holy basil','turmeric',
+  'valerian root','valerian','vanilla bean','violet leaf','violet',
+  'white peony','yarrow'
+];
 
-OILS AND FORMULAS:
-Rose — astringent, anti-inflammatory, nervine, emotional heart opener; cooling and moistening; all constitutions
-Lavender — relaxing nervine, antimicrobial, antispasmodic, skin healing; cooling; all constitutions
-Calendula — anti-inflammatory, skin healing, lymphatic, gentle; cooling; all constitutions
-Chamomile — relaxing nervine, anti-inflammatory, antispasmodic, digestive; cooling; Pitta/Vata
-Cleavers — lymphatic, diuretic, alterative; cooling and moistening; essential for lymphatic formulas
-Rosemary — stimulant, circulatory, antimicrobial; warming; Kapha/Vata
-Tulsi (Holy Basil) — adaptogen, nervine, antimicrobial, immunomodulating; warming; all constitutions
-Yarrow — astringent, diaphoretic, wound healing, lymphatic; neutral to cooling
-Red Raspberry Leaf — nutritive, uterine tonic, astringent, mineral-rich; cooling; womb care
-Saw Palmetto — reproductive tonic; neutral; womb and hormonal support all bodies
-Agrimony — astringent, digestive, liver support, drying; Kapha/Pitta
-Frankincense — anti-inflammatory, wound healing, ceremonial; warming; all constitutions
-Juniper — diuretic, antimicrobial, warming stimulant; drying and warming; Kapha
-
-STEAM HERBS (steam and topical only):
-Peppermint — cooling, digestive, antispasmodic, analgesic
-Eucalyptus — expectorant, antimicrobial, cooling sensation
-
-FLORIDA WATER AND RITUAL:
-Dried Lemon — uplifting, astringent, cleansing; ritual and Florida water
-Lemongrass — digestive, antimicrobial, cooling, uplifting; Pitta/Kapha
-Angelica Root — warming, circulatory, uterine; Vata/Kapha; ritual
-Dragon's Blood — astringent, wound healing, protective; ceremonial resin
-
-WARMING SPICES (accent herbs, use sparingly):
-Cinnamon — warming, stimulant, antimicrobial, circulatory; Vata/Kapha
-Anise — digestive, expectorant, antispasmodic; warming; Vata/Kapha
-Cloves — warming, analgesic, antimicrobial, stimulant; Kapha/Vata
-
-AVAILABLE CARRIER OILS — USE ONLY THESE:
-Castor Oil — heavy, drawing, lymphatic movement; use MAX 20% in body oils, 30-40% only for targeted womb/lymphatic treatment packs
-Sesame Oil — warming, grounding, deeply penetrating; Ayurvedic gold standard; 30-60% in Vata/Kapha warming formulas
-Jojoba Oil — stable, skin-balancing; good neutral base for all constitutions; use 20-40%
-Sunflower Oil — light, cooling, Pitta-friendly; excellent for inflamed or sensitive skin; use 40-70%
-Sweet Almond Oil — light, emotionally softening; excellent for nervous system and emotional formulas; 30-60%
-
-CARRIER OIL RULES:
-- For general body oils: Castor MAX 20%. Higher Castor makes the oil too heavy and sticky to absorb.
-- For womb packs or lymphatic treatment packs (not general body oils): Castor can go 30-50%.
-- Always lead with a light carrier (Sunflower, Sweet Almond, or Jojoba) for any oil meant to be used as a massage or body oil.
-- Percentages must add to exactly 100%.
-`;
+const VALID_CARRIERS = [
+  'sunflower oil','sunflower',
+  'castor oil','castor',
+  'grapeseed oil','grapeseed',
+  'olive oil','olive',
+  'mct oil','mct',
+  'sweet almond oil','sweet almond',
+  'jojoba oil','jojoba',
+  'sesame oil','sesame',
+  'avocado oil','avocado',
+  'rosehip oil','rosehip'
+];
 
 function goToStep(n) {
   if (n > state.currentStep) {
@@ -573,12 +608,27 @@ function validateStep(n) {
   if (n === 3) {
     if (!state.selections['system']) { alert('Please select at least one body system.'); return false; }
     if (!state.selections['format']) { alert('Please select a formula type.'); return false; }
-    if (state.selections['format'] === 'infused herbal oil' && !state.selections['infusion-method']) {
+    const fmt = state.selections['format'];
+    if (fmt === 'infused body oil' && !state.selections['infusion-method']) {
       alert('Please select an infusion method for your herbal oil.'); return false;
+    }
+    if (fmt === 'yoni steam' && !state.selections['cycle-phase']) {
+      alert('Please select a cycle phase for the yoni steam.'); return false;
     }
   }
   return true;
 }
+
+document.getElementById('sensitivityGrid').addEventListener('change', () => {
+  const checked = [...document.querySelectorAll('#sensitivityGrid input:checked')].map(c => c.value);
+  state.selections['sensitivities'] = checked;
+});
+
+document.getElementById('sensitivityGrid').querySelectorAll('.sensitivity-check').forEach(label => {
+  label.addEventListener('click', () => {
+    setTimeout(() => label.classList.toggle('selected', label.querySelector('input').checked), 0);
+  });
+});
 
 document.querySelectorAll('.option-pill').forEach(pill => {
   pill.addEventListener('click', () => {
@@ -594,15 +644,18 @@ document.querySelectorAll('.option-pill').forEach(pill => {
       pill.classList.add('selected');
       state.selections[group] = pill.dataset.value;
     }
+
     if (group === 'format') {
-      const methodBlock = document.getElementById('infusion-method-block');
-      if (methodBlock) {
-        methodBlock.style.display = pill.dataset.value === 'infused herbal oil' ? 'block' : 'none';
-        if (pill.dataset.value !== 'infused herbal oil') {
-          delete state.selections['infusion-method'];
-          methodBlock.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
-        }
-      }
+      const fmt = pill.dataset.value;
+      ['infusion-method','steam-sensitivity','congestion','cycle-phase','bath-intention'].forEach(k => delete state.selections[k]);
+      document.querySelectorAll('#infusion-method-block .option-pill, #steam-sensitivity-block .option-pill, #congestion-block .option-pill, #cycle-phase-block .option-pill, #bath-intention-block .option-pill')
+        .forEach(p => p.classList.remove('selected'));
+
+      document.getElementById('infusion-method-block').style.display = fmt === 'infused body oil' ? 'block' : 'none';
+      document.getElementById('steam-sensitivity-block').style.display = (fmt === 'facial steam' || fmt === 'full body herbal steam') ? 'block' : 'none';
+      document.getElementById('congestion-block').style.display = fmt === 'full body herbal steam' ? 'block' : 'none';
+      document.getElementById('cycle-phase-block').style.display = fmt === 'yoni steam' ? 'block' : 'none';
+      document.getElementById('bath-intention-block').style.display = fmt === 'bath blend' ? 'block' : 'none';
     }
   });
 });
@@ -612,65 +665,57 @@ function buildProfileSummary() {
   const labels = {
     'body-temp': 'Body temp', 'energy': 'Energy', 'skin': 'Presentation', 'stress': 'Stress response',
     'temp-state': 'Tissue temp', 'moist-state': 'Moisture', 'tension-state': 'Tension',
-    'system': 'System', 'format': 'Format'
+    'system': 'System', 'format': 'Formula type'
   };
   let html = '';
   for (const [group, label] of Object.entries(labels)) {
     const val = state.selections[group];
     if (!val) continue;
     const display = Array.isArray(val) ? val.join(', ') : val;
-    const short = display.length > 40 ? display.substring(0, 40) + '...' : display;
+    const short = display.length > 50 ? display.substring(0, 50) + '...' : display;
     html += `<div class="profile-badge highlight"><strong>${label}:</strong> ${short}</div>`;
+  }
+  const sensitivities = state.selections['sensitivities'];
+  if (sensitivities && sensitivities.length) {
+    html += `<div class="profile-badge highlight" style="background:#FFF8F0;border-color:#D4853A"><strong>Sensitivities:</strong> ${sensitivities.join(', ')}</div>`;
   }
   const concern = document.getElementById('clientConcern').value;
   if (concern) html += `<div class="profile-badge" style="width:100%"><strong>Intention:</strong> ${concern}</div>`;
   container.innerHTML = html;
 }
 
-const VALID_HERBS = ['rose','lavender','calendula','chamomile','cleavers','rosemary','tulsi','holy basil','yarrow','red raspberry leaf','red raspberry','saw palmetto','agrimony','frankincense','juniper','peppermint','eucalyptus','dried lemon','lemongrass','angelica root',"dragon's blood",'cinnamon','anise','cloves'];
-const VALID_CARRIERS = ['castor oil','castor','sesame oil','sesame','jojoba oil','jojoba','sunflower oil','sunflower','sweet almond oil','sweet almond'];
-
 function validateFormula(formula) {
   const warnings = [];
   (formula.herbs || []).forEach((herb, i) => {
     const name = herb.name.toLowerCase();
     const isValid = VALID_HERBS.some(v => name.includes(v) || v.includes(name.split(' ')[0]));
-    if (!isValid) { warnings.push('Herb "' + herb.name + '" not in stock — removed.'); formula.herbs[i] = null; }
+    if (!isValid) { warnings.push('Herb "' + herb.name + '" not in inventory — removed.'); formula.herbs[i] = null; }
   });
-  formula.herbs = formula.herbs.filter(Boolean);
-  (formula.carrierOils || []).forEach((oil, i) => {
-    const name = oil.name.toLowerCase();
-    const isValid = VALID_CARRIERS.some(v => name.includes(v) || v.includes(name.split(' ')[0]));
-    if (!isValid) { warnings.push('Carrier "' + oil.name + '" not in stock — replaced with Jojoba.'); formula.carrierOils[i].name = 'Jojoba Oil'; formula.carrierOils[i].why = 'Substituted with Jojoba — stable and suitable for all constitutions.'; }
-  });
+  formula.herbs = (formula.herbs || []).filter(Boolean);
+  if (formula.formulaType === 'oil' && formula.carrierOils && formula.carrierOils.length) {
+    formula.carrierOils.forEach((oil, i) => {
+      const name = oil.name.toLowerCase();
+      const isValid = VALID_CARRIERS.some(v => name.includes(v) || v.includes(name.split(' ')[0]));
+      if (!isValid) { warnings.push('Carrier "' + oil.name + '" not in stock — replaced with Jojoba.'); formula.carrierOils[i].name = 'Jojoba Oil'; formula.carrierOils[i].why = 'Substituted with Jojoba — stable and suitable for all constitutions.'; }
+    });
+  }
   return { formula, warnings };
 }
 
-// Calculate real measurements for the full Levo batch (1 liter / ~34 oz)
-function calculateMeasurements(formula) {
-  // Total parts
-  let totalHerbParts = 0;
-  (formula.herbs || []).forEach(h => { totalHerbParts += parseInt(h.amount) || 1; });
-
-  // 1 part = 3 tablespoons (rounded friendly number for a full Levo batch)
+function calculateOilMeasurements(formula) {
   const tbspPerPart = 3;
-
   const herbMeasurements = (formula.herbs || []).map(h => {
     const parts = parseInt(h.amount) || 1;
     const tbsp = parts * tbspPerPart;
-    return { name: h.name, parts, tbsp, cup: tbsp >= 16 ? (tbsp/16).toFixed(1) + ' cup' : tbsp + ' tbsp' };
+    return { name: h.name, parts, display: tbsp >= 16 ? (tbsp/16).toFixed(1) + ' cup' : tbsp + ' tbsp' };
   });
-
-  // Oil measurements (34 oz total for full Levo)
   const totalOz = 34;
   const oilMeasurements = (formula.carrierOils || []).map(oil => {
     const pct = parseInt(oil.percentage) / 100;
     const oz = Math.round(totalOz * pct);
-    const cups = (oz / 8).toFixed(1);
-    return { name: oil.name, percentage: oil.percentage, oz, cups };
+    return { name: oil.name, percentage: oil.percentage, oz, cups: (oz / 8).toFixed(1) };
   });
-
-  return { herbMeasurements, oilMeasurements, tbspPerPart };
+  return { herbMeasurements, oilMeasurements };
 }
 
 async function generateFormula() {
@@ -681,18 +726,34 @@ async function generateFormula() {
   document.getElementById('formulaOutput').classList.remove('visible');
   document.getElementById('errorState').style.display = 'none';
 
-  const loadingMessages = ['Reading the client profile...','Selecting carrier oils...','Matching herbs to constitution...','Writing the ritual intention...','Assembling your formula...'];
+  const fmt = state.selections['format'] || 'infused body oil';
+  const loadingMessages = {
+    'infused body oil': ['Reading the client profile...','Selecting carrier oils...','Matching herbs to constitution...','Calculating infusion ratios...','Assembling your formula...'],
+    'ritual body oil': ['Reading the client profile...','Selecting carrier oils...','Crafting the aromatic blend...','Writing the ritual intention...','Assembling your formula...'],
+    'bath blend': ['Reading the client profile...','Selecting bath herbs...','Balancing the aromatic blend...','Writing the ritual intention...','Assembling your formula...'],
+    'facial steam': ['Reading the client profile...','Selecting gentle facial herbs...','Checking skin compatibility...','Writing the ritual intention...','Assembling your formula...'],
+    'full body herbal steam': ['Reading the client profile...','Selecting steam herbs...','Balancing the aromatic profile...','Writing session instructions...','Assembling your formula...'],
+    'yoni steam': ['Reading the client profile...','Checking yoni steam safety...','Selecting gentle herbs...','Checking cycle phase compatibility...','Assembling your formula...'],
+  };
+  const msgs = loadingMessages[fmt] || loadingMessages['infused body oil'];
   let msgIdx = 0;
   const loadingEl = document.getElementById('loadingText');
-  const loadingInterval = setInterval(() => { msgIdx = (msgIdx + 1) % loadingMessages.length; loadingEl.textContent = loadingMessages[msgIdx]; }, 1800);
+  loadingEl.textContent = msgs[0];
+  const loadingInterval = setInterval(() => { msgIdx = (msgIdx + 1) % msgs.length; loadingEl.textContent = msgs[msgIdx]; }, 1800);
 
   const concern = document.getElementById('clientConcern').value || 'General wellness support';
   const systemArr = state.selections['system'];
-  const systems = Array.isArray(systemArr) ? systemArr.join(', ') : (systemArr || 'general');
+  const systems = Array.isArray(systemArr) ? systemArr.join(', ') : (systemArr || 'general wellness');
+  const sensitivities = (state.selections['sensitivities'] || []).join(', ') || 'none declared';
 
-  const prompt = `You are a clinical herbalist and educator at the Sacred Alchemist Herbal Alchemy Workshop by Gaja Bohème. You are creating a personalized herbal formula for a wellness practitioner's client.
+  const conditionalLines = [];
+  if (state.selections['infusion-method']) conditionalLines.push(`Infusion method: ${state.selections['infusion-method']}`);
+  if (state.selections['cycle-phase']) conditionalLines.push(`Cycle phase: ${state.selections['cycle-phase']}`);
+  if (state.selections['steam-sensitivity']) conditionalLines.push(`Steam sensitivity: ${state.selections['steam-sensitivity']}`);
+  if (state.selections['congestion']) conditionalLines.push(`Congestion level: ${state.selections['congestion']}`);
+  if (state.selections['bath-intention']) conditionalLines.push(`Bath intention: ${state.selections['bath-intention']}`);
 
-${HERB_DB}
+  const prompt = `Generate a complete herbal formula for a wellness practitioner's client.
 
 CLIENT PROFILE:
 - Body temperature tendency: ${state.selections['body-temp'] || 'not specified'}
@@ -703,54 +764,12 @@ CLIENT PROFILE:
 - Tissue moisture state: ${state.selections['moist-state'] || 'balanced'}
 - Tissue tension state: ${state.selections['tension-state'] || 'normal tone'}
 - Body systems to address: ${systems}
-- Formula type: ${state.selections['format'] || 'infused herbal oil'}
-- Infusion method (if applicable): ${state.selections['infusion-method'] || 'not specified'}
-- Client intention/concern: ${concern}
+- Formula type: ${fmt}
+- Allergies and sensitivities: ${sensitivities}
+- Client intention: ${concern}${conditionalLines.length ? '\n- ' + conditionalLines.join('\n- ') : ''}
 
-Based on this profile, create a complete herbal formula. Respond ONLY in valid JSON, no markdown, no extra text. Use this exact structure:
-
-{
-  "formulaName": "A poetic 3-5 word name in the Sacred Alchemist tradition",
-  "formulaSubtitle": "A short descriptive subtitle",
-  "profileAnalysis": "2-3 sentences interpreting the client's constitution and energetic pattern. Name the likely constitution (Pitta/Kapha/Vata) and explain the tissue state. Connect this to why specific actions are needed.",
-  "carrierOils": [
-    {
-      "name": "Oil name",
-      "percentage": "70%",
-      "role": "Primary carrier",
-      "why": "One sentence explaining why this oil was chosen for this specific client profile"
-    }
-  ],
-  "herbs": [
-    {
-      "name": "Herb name",
-      "role": "Primary herb",
-      "amount": "3",
-      "unit": "parts",
-      "why": "One sentence explaining the action this herb provides and why it matches the client profile"
-    }
-  ],
-  "instructions": [
-    "Step 1 instruction",
-    "Step 2 instruction"
-  ],
-  "ritualNote": "A 2-3 sentence ritual intention for this formula. Poetic, grounded, not overly mystical.",
-  "compass": {
-    "direction": "One of exactly: Connect, Shine, Nourish, or Release",
-    "why": "2 sentences explaining why this direction was assigned based on the client profile.",
-    "protocol": "2 sentences describing how to use this compass direction in an actual session. Specific, practical, bodywork-adjacent."
-  }
-}
-
-CRITICAL RULES:
-- Use ONLY herbs and carriers from the herb database above
-- CARRIER RATIOS: For general body oils, Castor MAX 20%. Lead with Sunflower, Sweet Almond, or Jojoba. Only use high Castor (30%+) for targeted womb packs or lymphatic treatment packs.
-- Include 1-2 carrier oils with percentages adding to exactly 100%
-- Include 4-6 herbs with whole number parts (1, 2, or 3)
-- For Levo machine infusion: instructions must specify 115°F (not 130°F), herb/low setting, 8-10 hours overnight, completely dried herbs only, press and strain through the Levo filter basket in the morning, bottle while warm, store away from heat and light, shelf life 3-6 months depending on storage
-- Write "1 part" not "1parts" — always include a space
-- Write "60% of base" not "60%of base" — always include a space before "of"
-- Keep all text grounded, professional, and educational`;
+Apply all formulation rules, delivery method compatibility, and safety filters from your system instructions.
+Respond ONLY in valid JSON using the exact schema defined in your system instructions.`;
 
   try {
     const response = await fetch('/api/generate', {
@@ -762,8 +781,9 @@ CRITICAL RULES:
     if (!response.ok) throw new Error(`API error: ${response.status}`);
     const data = await response.json();
     const raw = data.content.map(b => b.text || '').join('').trim();
-    const clean = raw.replace(/```json|```/g, '').trim();
+    const clean = raw.replace(/```json\n?|```/g, '').trim();
     let formula = JSON.parse(clean);
+    formula.formulaTypeName = fmt;
     const { formula: validatedFormula, warnings } = validateFormula(formula);
     formula = validatedFormula;
     document.getElementById('loadingState').style.display = 'none';
@@ -780,65 +800,116 @@ CRITICAL RULES:
 }
 
 function renderFormula(f) {
+  const isOil = f.formulaType === 'oil';
+  const isBath = f.formulaType === 'bath';
+
+  const typeLabels = {
+    'infused body oil': 'Infused Body Oil',
+    'ritual body oil': 'Ritual Body Oil',
+    'bath blend': 'Bath Blend',
+    'facial steam': 'Facial Steam',
+    'full body herbal steam': 'Full Body Steam',
+    'yoni steam': 'Yoni Steam'
+  };
+
+  document.getElementById('formulaTypeBadge').textContent = typeLabels[f.formulaTypeName] || f.formulaTypeName || 'Herbal Formula';
   document.getElementById('formulaName').textContent = f.formulaName || 'Sacred Formula';
-  document.getElementById('formulaSubtitle').textContent = f.formulaSubtitle || 'Sacred Alchemist Formula';
+  document.getElementById('formulaSubtitle').textContent = f.formulaSubtitle || 'Gaja Bohème Formula';
   document.getElementById('profileAnalysis').innerHTML = `<p>${f.profileAnalysis}</p>`;
 
-  // Carriers
-  let carriersHtml = '';
-  (f.carrierOils || []).forEach(oil => {
-    carriersHtml += `<div class="ingredient-row"><div><div class="ingredient-role">${oil.role || 'Carrier'}</div><div class="ingredient-name">${oil.name}</div><div class="ingredient-why">${oil.why}</div></div><div class="ingredient-amount">${oil.percentage}<span class="ingredient-unit">of base</span></div></div>`;
-  });
-  document.getElementById('carrierOils').innerHTML = carriersHtml;
+  const carrierSection = document.getElementById('carrierSection');
+  if (isOil && f.carrierOils && f.carrierOils.length) {
+    carrierSection.style.display = 'block';
+    let carriersHtml = '';
+    f.carrierOils.forEach(oil => {
+      carriersHtml += `<div class="ingredient-row"><div><div class="ingredient-role">${oil.role || 'Carrier'}</div><div class="ingredient-name">${oil.name}</div><div class="ingredient-why">${oil.why}</div></div><div class="ingredient-amount">${oil.percentage}<span class="ingredient-unit">of base</span></div></div>`;
+    });
+    document.getElementById('carrierOils').innerHTML = carriersHtml;
+  } else {
+    carrierSection.style.display = 'none';
+  }
 
-  // Herbs
   let herbsHtml = '';
   (f.herbs || []).forEach(herb => {
-    herbsHtml += `<div class="ingredient-row"><div><div class="ingredient-role">${herb.role || 'Herb'}</div><div class="ingredient-name">${herb.name}</div><div class="ingredient-why">${herb.why}</div></div><div class="ingredient-amount">${herb.amount}<span class="ingredient-unit">${herb.unit || 'parts'}</span></div></div>`;
+    const unitLabel = isOil ? (herb.unit || 'parts') : 'tbsp';
+    herbsHtml += `<div class="ingredient-row"><div><div class="ingredient-role">${herb.role || 'Herb'}</div><div class="ingredient-name">${herb.name}</div><div class="ingredient-why">${herb.why}</div></div><div class="ingredient-amount">${herb.amount}<span class="ingredient-unit">${unitLabel}</span></div></div>`;
   });
   document.getElementById('herbSelection').innerHTML = herbsHtml;
 
-  // Instructions + real measurements box
-  const measurements = calculateMeasurements(f);
+  document.getElementById('aromaticProfile').textContent = f.aromaticProfile || '';
+
   let instrHtml = '';
   (f.instructions || []).forEach((step, i) => {
     instrHtml += `<div class="instruction-step"><div class="step-num">${i + 1}</div><div class="step-text">${step}</div></div>`;
   });
 
-  // Build real measurements box
-  let herbRows = measurements.herbMeasurements.map(h =>
-    `<div class="measurements-row"><span class="measurements-herb">${h.name} (${h.parts} part${h.parts > 1 ? 's' : ''})</span><span class="measurements-amount">${h.cup}</span></div>`
-  ).join('');
-  let oilRows = measurements.oilMeasurements.map(o =>
-    `<div class="measurements-row"><span class="measurements-herb">${o.name} (${o.percentage})</span><span class="measurements-amount">${o.oz} oz / ${o.cups} cups</span></div>`
-  ).join('');
-
-  instrHtml += `
-    <div class="measurements-box">
-      <div class="measurements-box-title">How much to actually make — Full Levo Batch (1 liter / 34 oz)</div>
-      <div class="measurements-grid">
-        <div>
-          <div class="measurements-col-title">Herbs</div>
-          ${herbRows}
-          <div class="measurements-note">1 part = 3 tablespoons of dried herb</div>
+  if (isOil) {
+    const { herbMeasurements, oilMeasurements } = calculateOilMeasurements(f);
+    const herbRows = herbMeasurements.map(h =>
+      `<div class="measurements-row"><span class="measurements-herb">${h.name} (${h.parts} part${h.parts > 1 ? 's' : ''})</span><span class="measurements-amount">${h.display}</span></div>`
+    ).join('');
+    const oilRows = oilMeasurements.map(o =>
+      `<div class="measurements-row"><span class="measurements-herb">${o.name} (${o.percentage})</span><span class="measurements-amount">${o.oz} oz / ${o.cups} cups</span></div>`
+    ).join('');
+    const isLevo = (state.selections['infusion-method'] || '').toLowerCase().includes('levo');
+    instrHtml += `
+      <div class="measurements-box">
+        <div class="measurements-box-title">${isLevo ? 'Full Levo Batch (1 liter / 34 oz)' : 'Batch Measurements'}</div>
+        <div class="measurements-grid">
+          <div>
+            <div class="measurements-col-title">Herbs</div>${herbRows}
+            <div class="measurements-note">1 part = 3 tablespoons of dried herb</div>
+          </div>
+          <div>
+            <div class="measurements-col-title">Carrier Oils</div>${oilRows}
+            <div class="measurements-note">Total oil = ${isLevo ? '34 oz to fill the Levo reservoir' : 'scale to your batch size'}</div>
+          </div>
         </div>
-        <div>
-          <div class="measurements-col-title">Carrier Oils</div>
-          ${oilRows}
-          <div class="measurements-note">Total oil = 34 oz to fill the Levo reservoir</div>
+        ${isLevo ? `<div class="measurements-note" style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(201,168,76,0.2);">✦ Set Levo to 115°F on the herb/low setting · Infuse 8–10 hours overnight · Dried herbs only · Shelf life 3–6 months</div>` : ''}
+      </div>`;
+  } else if (isBath) {
+    const herbRows = (f.herbs || []).map(h =>
+      `<div class="measurements-row"><span class="measurements-herb">${h.name}</span><span class="measurements-amount">${h.amount} tbsp</span></div>`
+    ).join('');
+    instrHtml += `
+      <div class="measurements-box">
+        <div class="measurements-box-title">Per Bath — Suggested Amounts</div>
+        <div class="measurements-single">
+          <div class="measurements-col-title">Herbs</div>${herbRows}
+          <div class="measurements-note">Combine herbs. Use 1/4 to 1/2 cup of the blend per bath. Place in a muslin bag or steep in a pot of water first, then add to the bath.</div>
         </div>
-      </div>
-      <div class="measurements-note" style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(201,168,76,0.2);">
-        ✦ Set Levo to 115°F on the herb/low setting · Infuse 8–10 hours overnight · Dried herbs only · Shelf life 3–6 months
-      </div>
-    </div>`;
+      </div>`;
+  } else {
+    const fmt = f.formulaTypeName || '';
+    const isYoni = fmt.includes('yoni');
+    const isFacial = fmt.includes('facial');
+    const herbRows = (f.herbs || []).map(h =>
+      `<div class="measurements-row"><span class="measurements-herb">${h.name}</span><span class="measurements-amount">${h.amount} tbsp</span></div>`
+    ).join('');
+    let steamNote = '';
+    if (isFacial) steamNote = 'Add 1–2 tablespoons of the blend to a bowl of just-boiled water. Steam face 5–10 minutes at a comfortable distance. Keep eyes closed.';
+    else if (isYoni) steamNote = 'Add 1/2 to 1 cup of the blend to a yoni seat basin. Pour just-simmered water (not boiling) over the herbs. Test the temperature before sitting. Steam 20–30 minutes.';
+    else steamNote = 'Add 1/2 cup of the blend to a large pot of simmering water. Use a steam tent (towel over head and pot) for 10–20 minutes.';
+    instrHtml += `
+      <div class="measurements-box">
+        <div class="measurements-box-title">Per Session — Amounts</div>
+        <div class="measurements-single">
+          <div class="measurements-col-title">Herbs per session</div>${herbRows}
+          <div class="measurements-note">${steamNote}</div>
+        </div>
+      </div>`;
+  }
 
   document.getElementById('instructions').innerHTML = instrHtml;
-
-  // Ritual note
   document.getElementById('ritualNote').textContent = f.ritualNote || '';
 
-  // Compass
+  if (f.cautions) {
+    document.getElementById('cautionsSection').style.display = 'block';
+    document.getElementById('cautionsNote').textContent = f.cautions;
+  } else {
+    document.getElementById('cautionsSection').style.display = 'none';
+  }
+
   if (f.compass) {
     const dir = f.compass.direction || 'Nourish';
     const compassColors = {
@@ -870,7 +941,13 @@ function renderFormula(f) {
 function resetAll() {
   Object.keys(state.selections).forEach(k => delete state.selections[k]);
   document.querySelectorAll('.option-pill.selected').forEach(p => p.classList.remove('selected'));
+  document.querySelectorAll('#sensitivityGrid input[type="checkbox"]').forEach(c => { c.checked = false; });
+  document.querySelectorAll('.sensitivity-check').forEach(l => l.classList.remove('selected'));
   document.getElementById('clientConcern').value = '';
+  ['infusion-method-block','steam-sensitivity-block','congestion-block','cycle-phase-block','bath-intention-block'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
   document.getElementById('formulaOutput').classList.remove('visible');
   document.getElementById('errorState').style.display = 'none';
   document.getElementById('loadingState').style.display = 'none';
